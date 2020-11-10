@@ -16,7 +16,7 @@ import com.tiamosu.calendarview.entity.Calendar
  * @date 2020/5/25.
  */
 open class WeekBar(context: Context) : LinearLayoutCompat(context) {
-    private lateinit var viewDelegate: CalendarViewDelegate
+    protected lateinit var viewDelegate: CalendarViewDelegate
 
     open fun getLayoutId() = R.layout.layout_calendar_week_bar
 
