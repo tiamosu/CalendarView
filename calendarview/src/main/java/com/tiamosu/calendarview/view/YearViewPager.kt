@@ -133,11 +133,6 @@ class YearViewPager @JvmOverloads constructor(
         monthSelectedListener = listener
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val newHeightMeasureSpec = MeasureSpec.makeMeasureSpec(getHeight(this), MeasureSpec.EXACTLY)
-        super.onMeasure(widthMeasureSpec, newHeightMeasureSpec)
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent): Boolean {
         return viewDelegate.isYearViewScrollable && super.onTouchEvent(ev)
@@ -152,7 +147,7 @@ class YearViewPager @JvmOverloads constructor(
         /**
          * 计算相对高度
          *
-         * @return 月视图选择器最适合的高度
+         * @return 年月视图选择器最适合的高度
          */
         @Suppress("DEPRECATION")
         private fun getHeight(view: View): Int {

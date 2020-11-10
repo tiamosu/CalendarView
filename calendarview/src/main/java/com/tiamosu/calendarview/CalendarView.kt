@@ -110,6 +110,12 @@ open class CalendarView @JvmOverloads constructor(
         weekViewPager.layoutParams = params
 
         yearViewPager = findViewById(R.id.calendarView_vpYear)
+        yearViewPager.setPadding(
+            viewDelegate.yearViewPaddingLeft,
+            0,
+            viewDelegate.yearViewPaddingRight,
+            0
+        )
         yearViewPager.setBackgroundColor(viewDelegate.yearViewBackground)
         yearViewPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(
@@ -1178,6 +1184,21 @@ open class CalendarView @JvmOverloads constructor(
     fun setWeeColor(weekBackground: Int, weekTextColor: Int) {
         weekBar.setBackgroundColor(weekBackground)
         weekBar.setTextColor(weekTextColor)
+    }
+
+    fun setCalendarPadding(mCalendarPadding: Int) {
+        viewDelegate.setCalendarPadding(mCalendarPadding)
+        update()
+    }
+
+    fun setCalendarPaddingLeft(mCalendarPaddingLeft: Int) {
+        viewDelegate.setCalendarPaddingLeft(mCalendarPaddingLeft)
+        update()
+    }
+
+    fun setCalendarPaddingRight(mCalendarPaddingRight: Int) {
+        viewDelegate.setCalendarPaddingRight(mCalendarPaddingRight)
+        update()
     }
 
     /**

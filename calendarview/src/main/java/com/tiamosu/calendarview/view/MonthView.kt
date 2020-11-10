@@ -19,7 +19,9 @@ abstract class MonthView(context: Context) : BaseMonthView(context) {
         if (lineCount == 0) {
             return
         }
-        itemWidth = (width - 2 * viewDelegate.calendarPadding) / 7
+        itemWidth =
+            (width - viewDelegate.calendarPaddingLeft - viewDelegate.calendarPaddingRight) / 7
+
         onPreviewHook()
         val count = lineCount * 7
         var d = 0
@@ -51,7 +53,7 @@ abstract class MonthView(context: Context) : BaseMonthView(context) {
      * @param calendar 对应日历
      */
     private fun draw(canvas: Canvas, calendar: Calendar, i: Int, j: Int, d: Int) {
-        val x = j * itemWidth + viewDelegate.calendarPadding
+        val x = j * itemWidth + viewDelegate.calendarPaddingLeft
         val y = i * itemHeight
         onLoopStart(x, y)
         val isSelected = d == currentItem

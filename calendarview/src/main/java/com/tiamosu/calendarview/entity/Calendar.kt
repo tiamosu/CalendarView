@@ -157,7 +157,7 @@ class Calendar : Serializable, Comparable<Calendar?> {
      * 比较日期
      *
      * @param other 日期
-     * @return -1 0 1
+     * @return <0 0 >0
      */
     override fun compareTo(other: Calendar?): Int {
         return if (other == null) {

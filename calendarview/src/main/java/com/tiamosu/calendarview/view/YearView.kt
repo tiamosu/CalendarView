@@ -312,7 +312,8 @@ abstract class YearView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        itemWidth = (width - 2 * viewDelegate.yearViewPadding) / 7
+        itemWidth =
+            (width - viewDelegate.yearViewMonthPaddingLeft - viewDelegate.yearViewMonthPaddingRight) / 7
         onPreviewHook()
         onDrawMonth(canvas)
         onDrawWeek(canvas)
@@ -328,24 +329,21 @@ abstract class YearView @JvmOverloads constructor(
         onDrawMonth(
             canvas,
             year, month,
-            viewDelegate.yearViewPadding,
-            viewDelegate.yearViewMonthMarginTop,
-            width - 2 * viewDelegate.yearViewPadding,
-            viewDelegate.yearViewMonthHeight +
-                    viewDelegate.yearViewMonthMarginTop
+            viewDelegate.yearViewMonthPaddingLeft,
+            viewDelegate.yearViewMonthPaddingTop,
+            width - 2 * viewDelegate.yearViewMonthPaddingRight,
+            viewDelegate.yearViewMonthHeight + viewDelegate.yearViewMonthPaddingTop
         )
     }
 
     private val monthViewTop: Int
-        get() = viewDelegate.yearViewMonthMarginTop +
+        get() = viewDelegate.yearViewMonthPaddingTop +
                 viewDelegate.yearViewMonthHeight +
-                viewDelegate.yearViewMonthMarginBottom +
+                viewDelegate.yearViewMonthPaddingBottom +
                 viewDelegate.yearViewWeekHeight
 
     /**
      * 绘制
-     *
-     * @param canvas canvas
      */
     private fun onDrawWeek(canvas: Canvas) {
         if (viewDelegate.yearViewWeekHeight <= 0) {
@@ -355,18 +353,19 @@ abstract class YearView @JvmOverloads constructor(
         if (week > 0) {
             week -= 1
         }
-        val width = (width - 2 * viewDelegate.yearViewPadding) / 7
+        val width =
+            (width - viewDelegate.yearViewMonthPaddingLeft - viewDelegate.yearViewMonthPaddingRight) / 7
+
         for (i in 0..6) {
             onDrawWeek(
                 canvas,
                 week,
-                viewDelegate.yearViewPadding + i * width,
-                viewDelegate.yearViewMonthHeight +
-                        viewDelegate.yearViewMonthMarginTop +
-                        viewDelegate.yearViewMonthMarginBottom,
+                viewDelegate.yearViewMonthPaddingLeft + i * width,
+                viewDelegate.yearViewMonthHeight + viewDelegate.yearViewMonthPaddingTop + viewDelegate.yearViewMonthPaddingBottom,
                 width,
                 viewDelegate.yearViewWeekHeight
             )
+
             week += 1
             if (week >= 7) {
                 week = 0
@@ -404,7 +403,7 @@ abstract class YearView @JvmOverloads constructor(
      */
     @Suppress("UNUSED_PARAMETER")
     private fun draw(canvas: Canvas, calendar: Calendar, i: Int, j: Int, d: Int) {
-        val x = j * itemWidth + viewDelegate.yearViewPadding
+        val x = j * itemWidth + viewDelegate.yearViewMonthPaddingLeft
         val y = i * itemHeight + monthViewTop
         val isSelected = calendar == viewDelegate.selectedCalendar
         val hasScheme = calendar.hasScheme()

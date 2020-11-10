@@ -65,9 +65,57 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     var isPreventLongPressedSelected = false
 
     /**
+     * 年视图一些padding
+     */
+    var yearViewPadding = 0
+
+    /**
+     * 年视图一些padding
+     */
+    var yearViewPaddingLeft = 0
+
+    /**
+     * 年视图一些padding
+     */
+    var yearViewPaddingRight = 0
+
+    /**
+     * 年视图一些padding
+     */
+    var yearViewMonthPaddingLeft = 0
+
+    /**
+     * 年视图一些padding
+     */
+    var yearViewMonthPaddingRight = 0
+
+    /**
+     * 年视图一些padding
+     */
+    var yearViewMonthPaddingTop = 0
+
+    /**
+     * 年视图一些padding
+     */
+    var yearViewMonthPaddingBottom = 0
+
+    /**
+     * 日历内部左padding
+     */
+    var calendarPaddingLeft = 0
+        private set
+
+    /**
+     * 日历内部右padding
+     */
+    var calendarPaddingRight = 0
+        private set
+
+    /**
      * 日历内部左右padding
      */
-    val calendarPadding: Int
+    var calendarPadding: Int
+        private set
 
     /**
      * 年视图字体大小
@@ -81,13 +129,6 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
      */
     val yearViewMonthHeight: Int
     val yearViewWeekHeight: Int
-
-    /**
-     * 年视图一些margin和padding
-     */
-    val yearViewPadding: Int
-    val yearViewMonthMarginTop: Int
-    val yearViewMonthMarginBottom: Int
 
     /**
      * 年视图字体和标记颜色
@@ -329,6 +370,16 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
         val array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView)
         LunarCalendar.init(context)
         calendarPadding = array.getDimension(R.styleable.CalendarView_calendar_padding, 0f).toInt()
+        calendarPaddingLeft =
+            array.getDimension(R.styleable.CalendarView_calendar_padding_left, 0f).toInt()
+        calendarPaddingRight =
+            array.getDimension(R.styleable.CalendarView_calendar_padding_right, 0f).toInt()
+
+        if (calendarPadding != 0) {
+            calendarPaddingLeft = calendarPadding
+            calendarPaddingRight = calendarPadding
+        }
+
         schemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, -0x1)
         schemeLunarTextColor =
             array.getColor(R.styleable.CalendarView_scheme_lunar_text_color, -0x1e1e1f)
@@ -451,16 +502,39 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
         )
         yearViewPadding = array.getDimension(
             R.styleable.CalendarView_year_view_padding,
-            CalendarUtil.dipToPx(context, 6f).toFloat()
+            CalendarUtil.dipToPx(context, 12f).toFloat()
         ).toInt()
-        yearViewMonthMarginTop = array.getDimension(
-            R.styleable.CalendarView_year_view_month_margin_top,
+        yearViewPaddingLeft = array.getDimension(
+            R.styleable.CalendarView_year_view_padding_left,
+            CalendarUtil.dipToPx(context, 12f).toFloat()
+        ).toInt()
+        yearViewPaddingRight = array.getDimension(
+            R.styleable.CalendarView_year_view_padding_right,
+            CalendarUtil.dipToPx(context, 12f).toFloat()
+        ).toInt()
+
+        if (yearViewPadding != 0) {
+            yearViewPaddingLeft = yearViewPadding
+            yearViewPaddingRight = yearViewPadding
+        }
+
+        yearViewMonthPaddingTop = array.getDimension(
+            R.styleable.CalendarView_year_view_month_padding_top,
             CalendarUtil.dipToPx(context, 4f).toFloat()
         ).toInt()
-        yearViewMonthMarginBottom = array.getDimension(
-            R.styleable.CalendarView_year_view_month_margin_bottom,
+        yearViewMonthPaddingBottom = array.getDimension(
+            R.styleable.CalendarView_year_view_month_padding_bottom,
             CalendarUtil.dipToPx(context, 4f).toFloat()
         ).toInt()
+        yearViewMonthPaddingLeft = array.getDimension(
+            R.styleable.CalendarView_year_view_month_padding_left,
+            CalendarUtil.dipToPx(context, 4f).toFloat()
+        ).toInt()
+        yearViewMonthPaddingRight = array.getDimension(
+            R.styleable.CalendarView_year_view_month_padding_right,
+            CalendarUtil.dipToPx(context, 4f).toFloat()
+        ).toInt()
+
         if (minYear <= MIN_YEAR) {
             minYear = MIN_YEAR
         }
@@ -712,6 +786,20 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     fun clearSelectRange() {
         selectedStartRangeCalendar = null
         selectedEndRangeCalendar = null
+    }
+
+    fun setCalendarPadding(calendarPadding: Int) {
+        this.calendarPadding = calendarPadding
+        calendarPaddingLeft = calendarPadding
+        calendarPaddingRight = calendarPadding
+    }
+
+    fun setCalendarPaddingLeft(calendarPaddingLeft: Int) {
+        this.calendarPaddingLeft = calendarPaddingLeft
+    }
+
+    fun setCalendarPaddingRight(calendarPaddingRight: Int) {
+        this.calendarPaddingRight = calendarPaddingRight
     }
 
     /**

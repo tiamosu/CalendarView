@@ -4,6 +4,7 @@ import android.content.Context
 import com.tiamosu.calendarview.delegate.CalendarViewDelegate
 import com.tiamosu.calendarview.entity.Calendar
 import com.tiamosu.calendarview.utils.CalendarUtil
+import kotlin.math.roundToInt
 
 /**
  * 最基础周视图，因为日历UI采用热插拔实现，所以这里必须继承实现，达到UI一致即可
@@ -28,7 +29,8 @@ abstract class BaseWeekView(context: Context) : BaseView(context) {
      */
     fun setSelectedCalendar(calendar: Calendar) {
         if (viewDelegate.selectMode == CalendarViewDelegate.SELECT_MODE_SINGLE
-                && calendar != viewDelegate.selectedCalendar) {
+            && calendar != viewDelegate.selectedCalendar
+        ) {
             return
         }
         currentItem = items.indexOf(calendar)
@@ -43,7 +45,10 @@ abstract class BaseWeekView(context: Context) : BaseView(context) {
         }
         var week = CalendarUtil.getWeekViewIndexFromCalendar(calendar, viewDelegate.weekStart)
         if (items.contains(viewDelegate.currentDay)) {
-            week = CalendarUtil.getWeekViewIndexFromCalendar(viewDelegate.currentDay, viewDelegate.weekStart)
+            week = CalendarUtil.getWeekViewIndexFromCalendar(
+                viewDelegate.currentDay,
+                viewDelegate.weekStart
+            )
         }
         var curIndex = week
         var currentCalendar = items[week]
@@ -118,7 +123,11 @@ abstract class BaseWeekView(context: Context) : BaseView(context) {
      */
     protected val index: Calendar?
         get() {
-            var indexX = (mX - viewDelegate.calendarPadding).toInt() / itemWidth
+            if (mX <= viewDelegate.calendarPaddingLeft || mX >= width - viewDelegate.calendarPaddingRight) {
+                return null
+            }
+
+            var indexX = ((mX - viewDelegate.calendarPaddingLeft) / itemWidth).roundToInt()
             if (indexX >= 7) {
                 indexX = 6
             }
@@ -142,11 +151,12 @@ abstract class BaseWeekView(context: Context) : BaseView(context) {
     fun updateWeekStart() {
         val position = tag as Int
         val calendar = CalendarUtil.getFirstCalendarStartWithMinCalendar(
-                viewDelegate.minYear,
-                viewDelegate.minYearMonth,
-                viewDelegate.minYearDay,
-                position + 1,
-                viewDelegate.weekStart)
+            viewDelegate.minYear,
+            viewDelegate.minYearMonth,
+            viewDelegate.minYearDay,
+            position + 1,
+            viewDelegate.weekStart
+        )
         setSelectedCalendar(viewDelegate.selectedCalendar)
         setup(calendar)
     }

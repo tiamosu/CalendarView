@@ -291,7 +291,7 @@ class CalendarLayout(context: Context, attrs: AttributeSet?) : LinearLayoutCompa
                         viewDelegate.viewChangeListener?.onViewChange(false)
                     }
                     isWeekView = true
-                    return false
+                    return true
                 }
                 hideWeek(false)
 

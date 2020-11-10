@@ -4,6 +4,7 @@ import android.content.Context
 import com.tiamosu.calendarview.delegate.CalendarViewDelegate
 import com.tiamosu.calendarview.entity.Calendar
 import com.tiamosu.calendarview.utils.CalendarUtil
+import kotlin.math.roundToInt
 
 /**
  * 月视图基础控件,可自由继承实现
@@ -48,8 +49,10 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
         this.year = year
         this.month = month
         initCalendar()
-        monthHeight = CalendarUtil.getMonthViewHeight(year, month,
-                itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode)
+        monthHeight = CalendarUtil.getMonthViewHeight(
+            year, month,
+            itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
+        )
     }
 
     /**
@@ -59,7 +62,12 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
         nextDiff = CalendarUtil.getMonthEndDiff(year, month, viewDelegate.weekStart)
         val preDiff = CalendarUtil.getMonthViewStartDiff(year, month, viewDelegate.weekStart)
         val monthDayCount = CalendarUtil.getMonthDaysCount(year, month)
-        items = CalendarUtil.initCalendarForMonthView(year, month, viewDelegate.currentDay, viewDelegate.weekStart)
+        items = CalendarUtil.initCalendarForMonthView(
+            year,
+            month,
+            viewDelegate.currentDay,
+            viewDelegate.weekStart
+        )
 
         currentItem = if (items.contains(viewDelegate.currentDay)) {
             items.indexOf(viewDelegate.currentDay)
@@ -67,7 +75,8 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
             items.indexOf(viewDelegate.selectedCalendar)
         }
         if (currentItem > 0 && viewDelegate.calendarInterceptListener
-                        ?.onCalendarIntercept(viewDelegate.selectedCalendar) == true) {
+                ?.onCalendarIntercept(viewDelegate.selectedCalendar) == true
+        ) {
             currentItem = -1
         }
         lineCount = if (viewDelegate.monthViewShowMode == CalendarViewDelegate.MODE_ALL_MONTH) {
@@ -86,7 +95,10 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
         if (itemWidth == 0 || itemHeight == 0) {
             return null
         }
-        var indexX = (mX - viewDelegate.calendarPadding).toInt() / itemWidth
+        if (mX <= viewDelegate.calendarPaddingLeft || mX >= width - viewDelegate.calendarPaddingRight) {
+            return null
+        }
+        var indexX = ((mX - viewDelegate.calendarPaddingLeft) / itemWidth).roundToInt()
         if (indexX >= 7) {
             indexX = 6
         }
@@ -108,10 +120,14 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
      * 更新显示模式
      */
     fun updateShowMode() {
-        lineCount = CalendarUtil.getMonthViewLineCount(year, month,
-                viewDelegate.weekStart, viewDelegate.monthViewShowMode)
-        monthHeight = CalendarUtil.getMonthViewHeight(year, month,
-                itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode)
+        lineCount = CalendarUtil.getMonthViewLineCount(
+            year, month,
+            viewDelegate.weekStart, viewDelegate.monthViewShowMode
+        )
+        monthHeight = CalendarUtil.getMonthViewHeight(
+            year, month,
+            itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
+        )
         invalidate()
     }
 
@@ -120,14 +136,18 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
      */
     fun updateWeekStart() {
         initCalendar()
-        monthHeight = CalendarUtil.getMonthViewHeight(year, month,
-                itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode)
+        monthHeight = CalendarUtil.getMonthViewHeight(
+            year, month,
+            itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
+        )
     }
 
     override fun updateItemHeight() {
         super.updateItemHeight()
-        monthHeight = CalendarUtil.getMonthViewHeight(year, month,
-                itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode)
+        monthHeight = CalendarUtil.getMonthViewHeight(
+            year, month,
+            itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
+        )
     }
 
     override fun updateCurrentDate() {

@@ -23,10 +23,12 @@ abstract class MultiWeekView(context: Context) : BaseWeekView(context) {
         if (items.isEmpty()) {
             return
         }
-        itemWidth = (width - 2 * viewDelegate.calendarPadding) / 7
+        itemWidth =
+            (width - viewDelegate.calendarPaddingLeft - viewDelegate.calendarPaddingRight) / 7
+
         onPreviewHook()
         for (i in 0..6) {
-            val x = i * itemWidth + viewDelegate.calendarPadding
+            val x = i * itemWidth + viewDelegate.calendarPaddingLeft
             onLoopStart(x)
             val calendar = items[i]
             val isSelected = isCalendarSelected(calendar)

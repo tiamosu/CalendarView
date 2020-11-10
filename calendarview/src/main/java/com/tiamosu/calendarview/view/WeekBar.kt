@@ -42,7 +42,7 @@ open class WeekBar(context: Context) : LinearLayoutCompat(context) {
         setTextSize(viewDelegate.weekTextSize)
         setTextColor(delegate.weekTextColor)
         setBackgroundColor(delegate.weekBackground)
-        setPadding(delegate.calendarPadding, 0, delegate.calendarPadding, 0)
+        setPadding(delegate.calendarPaddingLeft, 0, delegate.calendarPaddingRight, 0)
     }
 
     /**
