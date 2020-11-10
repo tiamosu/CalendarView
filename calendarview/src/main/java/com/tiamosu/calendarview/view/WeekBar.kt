@@ -18,6 +18,8 @@ import com.tiamosu.calendarview.entity.Calendar
 open class WeekBar(context: Context) : LinearLayoutCompat(context) {
     private lateinit var viewDelegate: CalendarViewDelegate
 
+    open fun getLayoutId() = R.layout.layout_calendar_week_bar
+
     init {
         initLayout()
     }
@@ -27,7 +29,7 @@ open class WeekBar(context: Context) : LinearLayoutCompat(context) {
     }
 
     open fun setContentView() {
-        LayoutInflater.from(context).inflate(R.layout.layout_calendar_week_bar, this, true)
+        LayoutInflater.from(context).inflate(getLayoutId(), this, true)
     }
 
     /**
@@ -35,7 +37,7 @@ open class WeekBar(context: Context) : LinearLayoutCompat(context) {
      *
      * @param delegate delegate
      */
-    fun setup(delegate: CalendarViewDelegate) {
+    open fun setup(delegate: CalendarViewDelegate) {
         viewDelegate = delegate
         setTextSize(viewDelegate.weekTextSize)
         setTextColor(delegate.weekTextColor)
@@ -49,9 +51,9 @@ open class WeekBar(context: Context) : LinearLayoutCompat(context) {
      *
      * @param color color
      */
-    fun setTextColor(color: Int) {
+    open fun setTextColor(color: Int) {
         for (i in 0 until childCount) {
-            (getChildAt(i) as TextView).setTextColor(color)
+            (getChildAt(i) as? TextView)?.setTextColor(color)
         }
     }
 
@@ -60,9 +62,9 @@ open class WeekBar(context: Context) : LinearLayoutCompat(context) {
      *
      * @param size size
      */
-    protected fun setTextSize(size: Int) {
+    open fun setTextSize(size: Int) {
         for (i in 0 until childCount) {
-            (getChildAt(i) as TextView).setTextSize(TypedValue.COMPLEX_UNIT_PX, size.toFloat())
+            (getChildAt(i) as? TextView)?.setTextSize(TypedValue.COMPLEX_UNIT_PX, size.toFloat())
         }
     }
 
@@ -80,7 +82,7 @@ open class WeekBar(context: Context) : LinearLayoutCompat(context) {
      *
      * @param weekStart 周起始
      */
-    fun onWeekStartChange(weekStart: Int) {
+    open fun onWeekStartChange(weekStart: Int) {
         for (i in 0 until childCount) {
             (getChildAt(i) as TextView).text = getWeekString(i, weekStart)
         }
