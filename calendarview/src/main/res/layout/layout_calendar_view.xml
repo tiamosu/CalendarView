@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="all">
+
+    <FrameLayout
+        android:id="@+id/calendarView_frameContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <com.tiamosu.calendarview.view.MonthViewPager
+            android:id="@+id/calendarView_vpMonth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="41pt" />
+
+        <com.tiamosu.calendarview.view.WeekViewPager
+            android:id="@+id/calendarView_vpWeek"
+            android:layout_width="match_parent"
+            android:layout_height="50pt"
+            android:layout_marginTop="41pt"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/calendarView_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_marginLeft="16pt"
+            android:layout_marginTop="40pt"
+            android:layout_marginRight="16pt"
+            android:background="#CFCFCF" />
+    </FrameLayout>
+
+    <com.tiamosu.calendarview.view.YearViewPager
+        android:id="@+id/calendarView_vpYear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:paddingLeft="12pt"
+        android:paddingRight="12pt"
+        android:visibility="gone" />
+</merge>
