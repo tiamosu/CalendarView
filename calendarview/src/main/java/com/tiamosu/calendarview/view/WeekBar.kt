@@ -84,7 +84,7 @@ open class WeekBar(context: Context) : LinearLayoutCompat(context) {
      */
     open fun onWeekStartChange(weekStart: Int) {
         for (i in 0 until childCount) {
-            (getChildAt(i) as TextView).text = getWeekString(i, weekStart)
+            (getChildAt(i) as? TextView)?.text = getWeekString(i, weekStart)
         }
     }
 
