@@ -4,7 +4,6 @@ import android.content.Context
 import com.tiamosu.calendarview.delegate.CalendarViewDelegate
 import com.tiamosu.calendarview.entity.Calendar
 import com.tiamosu.calendarview.utils.CalendarUtil
-import kotlin.math.roundToInt
 
 /**
  * 月视图基础控件,可自由继承实现
@@ -98,7 +97,7 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
         if (mX <= viewDelegate.calendarPaddingLeft || mX >= width - viewDelegate.calendarPaddingRight) {
             return null
         }
-        var indexX = ((mX - viewDelegate.calendarPaddingLeft) / itemWidth).roundToInt()
+        var indexX = (mX - viewDelegate.calendarPaddingLeft).toInt() / itemWidth
         if (indexX >= 7) {
             indexX = 6
         }

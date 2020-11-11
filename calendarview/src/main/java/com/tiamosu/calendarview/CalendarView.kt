@@ -1186,18 +1186,18 @@ open class CalendarView @JvmOverloads constructor(
         weekBar.setTextColor(weekTextColor)
     }
 
-    fun setCalendarPadding(mCalendarPadding: Int) {
-        viewDelegate.setCalendarPadding(mCalendarPadding)
+    fun setCalendarPadding(calendarPadding: Int) {
+        viewDelegate.setCalendarPadding(calendarPadding)
         update()
     }
 
-    fun setCalendarPaddingLeft(mCalendarPaddingLeft: Int) {
-        viewDelegate.setCalendarPaddingLeft(mCalendarPaddingLeft)
+    fun setCalendarPaddingLeft(calendarPaddingLeft: Int) {
+        viewDelegate.setCalendarPaddingLeft(calendarPaddingLeft)
         update()
     }
 
-    fun setCalendarPaddingRight(mCalendarPaddingRight: Int) {
-        viewDelegate.setCalendarPaddingRight(mCalendarPaddingRight)
+    fun setCalendarPaddingRight(calendarPaddingRight: Int) {
+        viewDelegate.setCalendarPaddingRight(calendarPaddingRight)
         update()
     }
 

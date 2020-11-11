@@ -4,7 +4,6 @@ import android.content.Context
 import com.tiamosu.calendarview.delegate.CalendarViewDelegate
 import com.tiamosu.calendarview.entity.Calendar
 import com.tiamosu.calendarview.utils.CalendarUtil
-import kotlin.math.roundToInt
 
 /**
  * 最基础周视图，因为日历UI采用热插拔实现，所以这里必须继承实现，达到UI一致即可
@@ -127,7 +126,7 @@ abstract class BaseWeekView(context: Context) : BaseView(context) {
                 return null
             }
 
-            var indexX = ((mX - viewDelegate.calendarPaddingLeft) / itemWidth).roundToInt()
+            var indexX = (mX - viewDelegate.calendarPaddingLeft).toInt() / itemWidth
             if (indexX >= 7) {
                 indexX = 6
             }
