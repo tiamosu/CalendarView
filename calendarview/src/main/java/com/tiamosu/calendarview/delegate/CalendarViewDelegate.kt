@@ -286,6 +286,11 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     var schemeDatesMap: MutableMap<String, Calendar> = hashMapOf()
 
     /**
+     * 点击Padding位置事件
+     */
+    var clickCalendarPaddingListener: CalendarView.OnClickCalendarPaddingListener? = null
+
+    /**
      * 日期拦截事件
      */
     var calendarInterceptListener: CalendarView.OnCalendarInterceptListener? = null

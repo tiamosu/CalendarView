@@ -697,6 +697,15 @@ open class CalendarView @JvmOverloads constructor(
     }
 
     /**
+     * 点击视图Padding位置的事件
+     *
+     * @param listener listener
+     */
+    fun setOnClickCalendarPaddingListener(listener: OnClickCalendarPaddingListener?) {
+        viewDelegate.clickCalendarPaddingListener = listener
+    }
+
+    /**
      * 年份改变事件
      */
     fun setOnYearChangeListener(listener: OnYearChangeListener?) {
@@ -1414,7 +1423,7 @@ open class CalendarView @JvmOverloads constructor(
      *
      * @return 获取当前周数据
      */
-    val currentWeekCalendars: List<Calendar>?
+    val currentWeekCalendars: List<Calendar>
         get() = weekViewPager.currentWeekCalendars
 
     /**
@@ -1606,5 +1615,27 @@ open class CalendarView @JvmOverloads constructor(
     interface OnCalendarInterceptListener {
         fun onCalendarIntercept(calendar: Calendar): Boolean
         fun onCalendarInterceptClick(calendar: Calendar, isClick: Boolean)
+    }
+
+    /**
+     * 点击Padding位置事件
+     */
+    fun interface OnClickCalendarPaddingListener {
+        /**
+         * 点击Padding位置的事件
+         *
+         * @param x                x坐标
+         * @param y                y坐标
+         * @param isMonthView      是否是月视图，不是则为周视图
+         * @param adjacentCalendar 相邻的日历日期
+         * @param obj              此处的对象，自行设置
+         */
+        fun onClickCalendarPadding(
+            x: Float,
+            y: Float,
+            isMonthView: Boolean,
+            adjacentCalendar: Calendar?,
+            obj: Any?
+        )
     }
 }

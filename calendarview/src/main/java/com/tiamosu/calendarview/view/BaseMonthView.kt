@@ -62,10 +62,7 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
         val preDiff = CalendarUtil.getMonthViewStartDiff(year, month, viewDelegate.weekStart)
         val monthDayCount = CalendarUtil.getMonthDaysCount(year, month)
         items = CalendarUtil.initCalendarForMonthView(
-            year,
-            month,
-            viewDelegate.currentDay,
-            viewDelegate.weekStart
+            year, month, viewDelegate.currentDay, viewDelegate.weekStart
         )
 
         currentItem = if (items.contains(viewDelegate.currentDay)) {
@@ -95,6 +92,7 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
             return null
         }
         if (mX <= viewDelegate.calendarPaddingLeft || mX >= width - viewDelegate.calendarPaddingRight) {
+            onClickCalendarPadding()
             return null
         }
         var indexX = (mX - viewDelegate.calendarPaddingLeft).toInt() / itemWidth
@@ -104,6 +102,45 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
         val indexY = mY.toInt() / itemHeight
         val position = indexY * 7 + indexX // 选择项
         return if (position >= 0 && position < items.size) items[position] else null
+    }
+
+    private fun onClickCalendarPadding() {
+        if (viewDelegate.clickCalendarPaddingListener == null) {
+            return
+        }
+        var calendar: Calendar? = null
+        var indexX = (mX - viewDelegate.calendarPaddingLeft).toInt() / itemWidth
+        if (indexX >= 7) {
+            indexX = 6
+        }
+        val indexY = mY.toInt() / itemHeight
+        val position = indexY * 7 + indexX // 选择项
+        if (position >= 0 && position < items.size) {
+            calendar = items[position]
+        }
+        if (calendar == null) {
+            return
+        }
+        viewDelegate.clickCalendarPaddingListener?.onClickCalendarPadding(
+            mX, mY, true, calendar,
+            getClickCalendarPaddingObject(mX, mY, calendar)
+        )
+    }
+
+    /**
+     * 获取点击事件处的对象
+     *
+     * @param x                x
+     * @param y                y
+     * @param adjacentCalendar adjacent calendar
+     * @return obj can as null
+     */
+    protected open fun getClickCalendarPaddingObject(
+        x: Float,
+        y: Float,
+        adjacentCalendar: Calendar?
+    ): Any? {
+        return null
     }
 
     /**
@@ -120,12 +157,10 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
      */
     fun updateShowMode() {
         lineCount = CalendarUtil.getMonthViewLineCount(
-            year, month,
-            viewDelegate.weekStart, viewDelegate.monthViewShowMode
+            year, month, viewDelegate.weekStart, viewDelegate.monthViewShowMode
         )
         monthHeight = CalendarUtil.getMonthViewHeight(
-            year, month,
-            itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
+            year, month, itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
         )
         invalidate()
     }
@@ -136,16 +171,14 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
     fun updateWeekStart() {
         initCalendar()
         monthHeight = CalendarUtil.getMonthViewHeight(
-            year, month,
-            itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
+            year, month, itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
         )
     }
 
     override fun updateItemHeight() {
         super.updateItemHeight()
         monthHeight = CalendarUtil.getMonthViewHeight(
-            year, month,
-            itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
+            year, month, itemHeight, viewDelegate.weekStart, viewDelegate.monthViewShowMode
         )
     }
 
