@@ -41,7 +41,7 @@ abstract class MultiMonthView(context: Context) : BaseMonthView(context) {
                         return
                     }
                 }
-                draw(canvas, calendar, i, j)
+                draw(canvas, calendar, d, i, j)
                 ++d
             }
         }
@@ -55,14 +55,15 @@ abstract class MultiMonthView(context: Context) : BaseMonthView(context) {
      * @param i        i
      * @param j        j
      */
-    private fun draw(canvas: Canvas, calendar: Calendar, i: Int, j: Int) {
+    private fun draw(canvas: Canvas, calendar: Calendar, calendarIndex: Int, i: Int, j: Int) {
         val x = j * itemWidth + viewDelegate.calendarPaddingLeft
         val y = i * itemHeight
         onLoopStart(x, y)
+
         val isSelected = isCalendarSelected(calendar)
         val hasScheme = calendar.hasScheme()
-        val isPreSelected = isSelectPreCalendar(calendar)
-        val isNextSelected = isSelectNextCalendar(calendar)
+        val isPreSelected = isSelectPreCalendar(calendar, calendarIndex)
+        val isNextSelected = isSelectNextCalendar(calendar, calendarIndex)
         if (hasScheme) {
             //标记的日子
             var isDrawSelected = false //是否继续绘制选中的onDrawScheme
@@ -157,11 +158,17 @@ abstract class MultiMonthView(context: Context) : BaseMonthView(context) {
      * 上一个日期是否选中
      *
      * @param calendar 当前日期
+     * @param calendarIndex 当前位置
      * @return 上一个日期是否选中
      */
-    protected fun isSelectPreCalendar(calendar: Calendar): Boolean {
-        val preCalendar = CalendarUtil.getPreCalendar(calendar)
-        viewDelegate.updateCalendarScheme(preCalendar)
+    protected fun isSelectPreCalendar(calendar: Calendar, calendarIndex: Int): Boolean {
+        val preCalendar: Calendar
+        if (calendarIndex == 0) {
+            preCalendar = CalendarUtil.getPreCalendar(calendar)
+            viewDelegate.updateCalendarScheme(preCalendar)
+        } else {
+            preCalendar = items[calendarIndex - 1]
+        }
         return isCalendarSelected(preCalendar)
     }
 
@@ -169,11 +176,17 @@ abstract class MultiMonthView(context: Context) : BaseMonthView(context) {
      * 下一个日期是否选中
      *
      * @param calendar 当前日期
+     * @param calendarIndex 当前位置
      * @return 下一个日期是否选中
      */
-    protected fun isSelectNextCalendar(calendar: Calendar): Boolean {
-        val nextCalendar = CalendarUtil.getNextCalendar(calendar)
-        viewDelegate.updateCalendarScheme(nextCalendar)
+    protected fun isSelectNextCalendar(calendar: Calendar, calendarIndex: Int): Boolean {
+        val nextCalendar: Calendar
+        if (calendarIndex == items.lastIndex) {
+            nextCalendar = CalendarUtil.getNextCalendar(calendar)
+            viewDelegate.updateCalendarScheme(nextCalendar)
+        } else {
+            nextCalendar = items[calendarIndex + 1]
+        }
         return isCalendarSelected(nextCalendar)
     }
 

@@ -20,7 +20,8 @@ import kotlin.math.abs
  * @date 2020/5/25.
  */
 abstract class BaseView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null
+    context: Context,
+    attrs: AttributeSet? = null
 ) : View(context, attrs), View.OnClickListener, OnLongClickListener {
 
     companion object {
@@ -35,62 +36,153 @@ abstract class BaseView @JvmOverloads constructor(
     /**
      * 当前月份日期画笔
      */
-    protected var curMonthTextPaint = Paint()
+    protected val curMonthTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = -0xeeeeef
+            isFakeBoldText = true
+            textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
+        }
+    }
 
     /**
      * 当前月份农历画笔
      */
-    protected var curMonthLunarTextPaint = Paint()
+    protected val curMonthLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 其它月份日期画笔
      */
-    protected var otherMonthTextPaint = Paint()
+    protected val otherMonthTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = -0x1e1e1f
+            isFakeBoldText = true
+            textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
+        }
+    }
 
     /**
      * 其它月份农历画笔
      */
-    protected var otherMonthLunarTextPaint = Paint()
+    protected val otherMonthLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 带标记的日期画笔
      */
-    protected var schemeTextPaint = Paint()
+    protected val schemeTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = -0x12acad
+            isFakeBoldText = true
+            textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
+        }
+    }
 
     /**
      * 带标记的农历画笔
      */
-    protected var schemeLunarTextPaint = Paint()
+    protected val schemeLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 带标记的 item 背景画笔
      */
-    protected var schemePaint = Paint()
+    protected val schemePaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            strokeWidth = 2f
+            color = -0x101011
+        }
+    }
 
     /**
      * 被选中的日期画笔
      */
-    protected var selectTextPaint = Paint()
+    protected val selectTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = -0x12acad
+            isFakeBoldText = true
+            textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
+        }
+    }
 
     /**
      * 被选中的农历画笔
      */
-    protected var selectedLunarTextPaint = Paint()
+    protected val selectedLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 被选择的 item 背景画笔
      */
-    protected var selectedItemPaint = Paint()
+    protected val selectedItemPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            strokeWidth = 2f
+        }
+    }
 
     /**
      * 当前日期画笔（今天日期）
      */
-    protected var curDayTextPaint = Paint()
+    protected val curDayTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = Color.RED
+            isFakeBoldText = true
+            textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
+        }
+    }
 
     /**
      * 当前日期农历画笔（今天农历）
      */
-    protected var curDayLunarTextPaint = Paint()
+    protected val curDayLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = Color.RED
+            isFakeBoldText = true
+            textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
+        }
+    }
 
     /**
      * 日历布局，需要在日历下方放自己的布局
@@ -120,8 +212,8 @@ abstract class BaseView @JvmOverloads constructor(
     /**
      * 点击的x、y坐标
      */
-    var mX = 0f
-    var mY = 0f
+    protected var mX = 0f
+    protected var mY = 0f
 
     /**
      * 是否点击
@@ -133,81 +225,19 @@ abstract class BaseView @JvmOverloads constructor(
      */
     var currentItem = -1
 
+    /**
+     * 周起始
+     */
+    var mWeekStartWidth = 0
+
     init {
-        initPaint(context)
+        init()
     }
 
     /**
      * 初始化配置
      */
-    private fun initPaint(context: Context) {
-        curMonthTextPaint.isAntiAlias = true
-        curMonthTextPaint.style = Paint.Style.FILL
-        curMonthTextPaint.textAlign = Paint.Align.CENTER
-        curMonthTextPaint.color = -0xeeeeef
-        curMonthTextPaint.isFakeBoldText = true
-        curMonthTextPaint.textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
-
-        curMonthLunarTextPaint.isAntiAlias = true
-        curMonthLunarTextPaint.style = Paint.Style.FILL
-        curMonthLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        otherMonthTextPaint.isAntiAlias = true
-        otherMonthTextPaint.style = Paint.Style.FILL
-        otherMonthTextPaint.textAlign = Paint.Align.CENTER
-        otherMonthTextPaint.color = -0x1e1e1f
-        otherMonthTextPaint.isFakeBoldText = true
-        otherMonthTextPaint.textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
-
-        otherMonthLunarTextPaint.isAntiAlias = true
-        otherMonthLunarTextPaint.style = Paint.Style.FILL
-        otherMonthLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        schemeTextPaint.isAntiAlias = true
-        schemeTextPaint.style = Paint.Style.FILL
-        schemeTextPaint.textAlign = Paint.Align.CENTER
-        schemeTextPaint.color = -0x12acad
-        schemeTextPaint.isFakeBoldText = true
-        schemeTextPaint.textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
-
-        schemeLunarTextPaint.isAntiAlias = true
-        schemeLunarTextPaint.style = Paint.Style.FILL
-        schemeLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        schemePaint.isAntiAlias = true
-        schemePaint.style = Paint.Style.FILL
-        schemePaint.strokeWidth = 2f
-        schemePaint.color = -0x101011
-
-        selectTextPaint.isAntiAlias = true
-        selectTextPaint.style = Paint.Style.FILL
-        selectTextPaint.textAlign = Paint.Align.CENTER
-        selectTextPaint.color = -0x12acad
-        selectTextPaint.isFakeBoldText = true
-        selectTextPaint.textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
-
-        selectedLunarTextPaint.isAntiAlias = true
-        selectedLunarTextPaint.style = Paint.Style.FILL
-        selectedLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        selectedItemPaint.isAntiAlias = true
-        selectedItemPaint.style = Paint.Style.FILL
-        selectedItemPaint.strokeWidth = 2f
-
-        curDayTextPaint.isAntiAlias = true
-        curDayTextPaint.style = Paint.Style.FILL
-        curDayTextPaint.textAlign = Paint.Align.CENTER
-        curDayTextPaint.color = Color.RED
-        curDayTextPaint.isFakeBoldText = true
-        curDayTextPaint.textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
-
-        curDayLunarTextPaint.isAntiAlias = true
-        curDayLunarTextPaint.style = Paint.Style.FILL
-        curDayLunarTextPaint.textAlign = Paint.Align.CENTER
-        curDayLunarTextPaint.color = Color.RED
-        curDayLunarTextPaint.isFakeBoldText = true
-        curDayLunarTextPaint.textSize = CalendarUtil.dipToPx(context, TEXT_SIZE.toFloat()).toFloat()
-
+    private fun init() {
         setOnClickListener(this)
         setOnLongClickListener(this)
     }
@@ -217,6 +247,8 @@ abstract class BaseView @JvmOverloads constructor(
      */
     fun setup(delegate: CalendarViewDelegate) {
         viewDelegate = delegate
+        mWeekStartWidth = viewDelegate.weekStart
+
         updateStyle()
         updateItemHeight()
         initPaint()
@@ -380,6 +412,18 @@ abstract class BaseView @JvmOverloads constructor(
      * 销毁
      */
     abstract fun onDestroy()
+
+    protected open fun getWeekStartWith(): Int {
+        return viewDelegate.weekStart
+    }
+
+    protected open fun getCalendarPaddingLeft(): Int {
+        return viewDelegate.calendarPaddingLeft
+    }
+
+    protected open fun getCalendarPaddingRight(): Int {
+        return viewDelegate.calendarPaddingRight
+    }
 
     /**
      * 初始化画笔相关

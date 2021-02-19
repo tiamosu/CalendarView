@@ -81,13 +81,12 @@ object CalendarUtil {
     }
 
     /**
-     * 获取月视图的确切高度
-     * Test pass
-     *
      * @param year       年
      * @param month      月
      * @param itemHeight 每项的高度
-     * @return 不需要多余行的高度
+     * @param weekStartWith 周起始
+     *
+     * @return 获取月视图的确切高度，不需要多余行的高度
      */
     fun getMonthViewHeight(year: Int, month: Int, itemHeight: Int, weekStartWith: Int): Int {
         val date = java.util.Calendar.getInstance()
@@ -99,13 +98,12 @@ object CalendarUtil {
     }
 
     /**
-     * 获取月视图的确切高度
-     * Test pass
-     *
      * @param year       年
      * @param month      月
      * @param itemHeight 每项的高度
-     * @return 不需要多余行的高度
+     * @param weekStartWith 周起始
+     *
+     * @return 获取月视图的确切高度，不需要多余行的高度
      */
     fun getMonthViewHeight(
         year: Int,
@@ -121,7 +119,6 @@ object CalendarUtil {
 
     /**
      * 获取某天在该月的第几周,换言之就是获取这一天在该月视图的第几行,第几周，根据周起始动态获取
-     * Test pass，单元测试通过
      *
      * @param calendar  calendar
      * @param weekStart 其实星期是哪一天？
@@ -366,17 +363,21 @@ object CalendarUtil {
     /**
      * 根据星期数和最小日期推算出该星期的第一天，
      * 为了防止夏令时，导致的时间提前和延后1-2小时，导致日期出现误差1天，因此吧hourOfDay = 12
-     * //测试通过 Test pass
      *
      * @param minYear      最小年份如2017
      * @param minYearMonth maxYear 最小年份月份，like : 2017-07
      * @param minYearDay   最小年份天
      * @param week         从最小年份minYear月minYearMonth 日1 开始的第几周 week > 0
+     * @param weekStart 周起始
+     *
      * @return 该星期的第一天日期
      */
     fun getFirstCalendarStartWithMinCalendar(
-        minYear: Int, minYearMonth: Int,
-        minYearDay: Int, week: Int, weekStart: Int
+        minYear: Int,
+        minYearMonth: Int,
+        minYearDay: Int,
+        week: Int,
+        weekStart: Int
     ): Calendar {
         val date = java.util.Calendar.getInstance()
         date[minYear, minYearMonth - 1, minYearDay, 12] = 0

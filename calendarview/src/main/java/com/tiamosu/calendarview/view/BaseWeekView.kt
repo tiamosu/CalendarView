@@ -123,6 +123,7 @@ abstract class BaseWeekView(context: Context) : BaseView(context) {
     protected val index: Calendar?
         get() {
             if (mX <= viewDelegate.calendarPaddingLeft || mX >= width - viewDelegate.calendarPaddingRight) {
+                onClickCalendarPadding()
                 return null
             }
 
@@ -136,6 +137,46 @@ abstract class BaseWeekView(context: Context) : BaseView(context) {
                 items[position]
             } else null
         }
+
+    private fun onClickCalendarPadding() {
+        if (viewDelegate.clickCalendarPaddingListener == null) {
+            return
+        }
+        var calendar: Calendar? = null
+        var indexX = (mX - viewDelegate.calendarPaddingLeft).toInt() / itemWidth
+        if (indexX >= 7) {
+            indexX = 6
+        }
+        val indexY = mY.toInt() / itemHeight
+        val position = indexY * 7 + indexX // 选择项
+        if (position >= 0 && position < items.size) {
+            calendar = items[position]
+        }
+        if (calendar == null) {
+            return
+        }
+        viewDelegate.clickCalendarPaddingListener?.onClickCalendarPadding(
+            mX, mY, false, calendar,
+            getClickCalendarPaddingObject(mX, mY, calendar)
+        )
+    }
+
+    /**
+     * / **
+     * 获取点击事件处的对象
+     *
+     * @param x                x
+     * @param y                y
+     * @param adjacentCalendar adjacent calendar
+     * @return obj can as null
+     */
+    protected open fun getClickCalendarPaddingObject(
+        x: Float,
+        y: Float,
+        adjacentCalendar: Calendar?
+    ): Any? {
+        return null
+    }
 
     /**
      * 更新显示模式

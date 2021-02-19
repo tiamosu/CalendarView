@@ -30,10 +30,11 @@ abstract class RangeWeekView(context: Context) : BaseWeekView(context) {
         for (i in 0..6) {
             val x = i * itemWidth + viewDelegate.calendarPaddingLeft
             onLoopStart(x)
+
             val calendar = items[i]
             val isSelected = isCalendarSelected(calendar)
-            val isPreSelected = isSelectPreCalendar(calendar)
-            val isNextSelected = isSelectNextCalendar(calendar)
+            val isPreSelected = isSelectPreCalendar(calendar, i)
+            val isNextSelected = isSelectNextCalendar(calendar, i)
             val hasScheme = calendar.hasScheme()
             if (hasScheme) {
                 var isDrawSelected = false //是否继续绘制选中的onDrawScheme
@@ -142,11 +143,17 @@ abstract class RangeWeekView(context: Context) : BaseWeekView(context) {
      * 上一个日期是否选中
      *
      * @param calendar 当前日期
+     * @param calendarIndex 当前位置
      * @return 上一个日期是否选中
      */
-    protected fun isSelectPreCalendar(calendar: Calendar): Boolean {
-        val preCalendar = CalendarUtil.getPreCalendar(calendar)
-        viewDelegate.updateCalendarScheme(preCalendar)
+    protected fun isSelectPreCalendar(calendar: Calendar, calendarIndex: Int): Boolean {
+        val preCalendar: Calendar
+        if (calendarIndex == 0) {
+            preCalendar = CalendarUtil.getPreCalendar(calendar)
+            viewDelegate.updateCalendarScheme(preCalendar)
+        } else {
+            preCalendar = items[calendarIndex - 1]
+        }
         return viewDelegate.selectedStartRangeCalendar != null &&
                 isCalendarSelected(preCalendar)
     }
@@ -155,11 +162,17 @@ abstract class RangeWeekView(context: Context) : BaseWeekView(context) {
      * 下一个日期是否选中
      *
      * @param calendar 当前日期
+     * @param calendarIndex 当前位置
      * @return 下一个日期是否选中
      */
-    protected fun isSelectNextCalendar(calendar: Calendar): Boolean {
-        val nextCalendar = CalendarUtil.getNextCalendar(calendar)
-        viewDelegate.updateCalendarScheme(nextCalendar)
+    protected fun isSelectNextCalendar(calendar: Calendar, calendarIndex: Int): Boolean {
+        val nextCalendar: Calendar
+        if (calendarIndex == items.lastIndex) {
+            nextCalendar = CalendarUtil.getNextCalendar(calendar)
+            viewDelegate.updateCalendarScheme(nextCalendar)
+        } else {
+            nextCalendar = items[calendarIndex + 1]
+        }
         return viewDelegate.selectedStartRangeCalendar != null &&
                 isCalendarSelected(nextCalendar)
     }
