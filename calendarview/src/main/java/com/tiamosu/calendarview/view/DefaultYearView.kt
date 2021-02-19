@@ -14,7 +14,7 @@ import com.tiamosu.calendarview.utils.CalendarUtil
  */
 class DefaultYearView(context: Context) : YearView(context) {
 
-    private val textPadding = CalendarUtil.dipToPx(context, 3f)
+    private val textPadding by lazy { CalendarUtil.dipToPx(context, 3f) }
 
     override fun onDrawMonth(
         canvas: Canvas,

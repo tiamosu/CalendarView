@@ -217,8 +217,12 @@ open class CalendarView @JvmOverloads constructor(
      * @param maxYearDay   最大月份对应天
      */
     fun setRange(
-        minYear: Int, minYearMonth: Int, minYearDay: Int,
-        maxYear: Int, maxYearMonth: Int, maxYearDay: Int
+        minYear: Int,
+        minYearMonth: Int,
+        minYearDay: Int,
+        maxYear: Int,
+        maxYearMonth: Int,
+        maxYearDay: Int
     ) {
         if (CalendarUtil.compareTo(
                 minYear,
@@ -232,8 +236,7 @@ open class CalendarView @JvmOverloads constructor(
             return
         }
         viewDelegate.setRange(
-            minYear, minYearMonth, minYearDay,
-            maxYear, maxYearMonth, maxYearDay
+            minYear, minYearMonth, minYearDay, maxYear, maxYearMonth, maxYearDay
         )
         weekViewPager.notifyDataSetChanged()
         yearViewPager.notifyDataSetChanged()
@@ -458,8 +461,11 @@ open class CalendarView @JvmOverloads constructor(
      * @param invokeListener 调用日期事件
      */
     fun scrollToCalendar(
-        year: Int, month: Int, day: Int,
-        smoothScroll: Boolean = false, invokeListener: Boolean = true
+        year: Int,
+        month: Int,
+        day: Int,
+        smoothScroll: Boolean = false,
+        invokeListener: Boolean = true
     ) {
         val calendar = Calendar()
         calendar.year = year
@@ -802,10 +808,11 @@ open class CalendarView @JvmOverloads constructor(
         if (viewDelegate.selectedStartRangeCalendar == null) {
             return
         }
-        val endCalendar = Calendar()
-        endCalendar.year = endYear
-        endCalendar.month = endMonth
-        endCalendar.day = endDay
+        val endCalendar = Calendar().apply {
+            year = endYear
+            month = endMonth
+            day = endDay
+        }
         setSelectEndCalendar(endCalendar)
     }
 
@@ -829,14 +836,16 @@ open class CalendarView @JvmOverloads constructor(
         if (viewDelegate.selectMode != CalendarViewDelegate.SELECT_MODE_RANGE) {
             return
         }
-        val startCalendar = Calendar()
-        startCalendar.year = startYear
-        startCalendar.month = startMonth
-        startCalendar.day = startDay
-        val endCalendar = Calendar()
-        endCalendar.year = endYear
-        endCalendar.month = endMonth
-        endCalendar.day = endDay
+        val startCalendar = Calendar().apply {
+            year = startYear
+            month = startMonth
+            day = startDay
+        }
+        val endCalendar = Calendar().apply {
+            year = endYear
+            month = endMonth
+            day = endDay
+        }
         setSelectCalendarRange(startCalendar, endCalendar)
     }
 
@@ -969,8 +978,7 @@ open class CalendarView @JvmOverloads constructor(
      * 恢复状态
      */
     override fun onRestoreInstanceState(state: Parcelable?) {
-        val bundle = state as? Bundle
-        bundle?.apply {
+        (state as? Bundle)?.apply {
             val superData = getParcelable<Parcelable>("super")
             viewDelegate.selectedCalendar = getSerializable("selected_calendar") as Calendar
             viewDelegate.indexCalendar = getSerializable("index_calendar") as Calendar

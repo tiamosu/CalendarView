@@ -40,24 +40,20 @@ internal class YearViewAdapter(private val context: Context) : BaseRecyclerAdapt
                 DefaultYearView(context)
             }
         }
-        val params = RecyclerView.LayoutParams(
-            RecyclerView.LayoutParams.MATCH_PARENT,
-            RecyclerView.LayoutParams.MATCH_PARENT
-        )
-        yearView.layoutParams = params
+        yearView.layoutParams = RecyclerView.LayoutParams(-1, -1)
         return YearViewHolder(yearView, viewDelegate)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, item: Month, position: Int) {
-        val yearViewHolder = holder as? YearViewHolder
-        val view = yearViewHolder?.yearView
-        view?.init(item.year, item.month)
-        view?.measureSize(itemWidth, itemHeight)
+        (holder as? YearViewHolder)?.yearView?.apply {
+            init(item.year, item.month)
+            measureSize(itemWidth, itemHeight)
+        }
     }
 
     private class YearViewHolder(itemView: View, delegate: CalendarViewDelegate) :
         RecyclerView.ViewHolder(itemView) {
-        var yearView = itemView as? YearView
+        val yearView = itemView as? YearView
 
         init {
             yearView?.setup(delegate)

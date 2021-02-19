@@ -43,25 +43,17 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
      * 各种字体颜色，看名字知道对应的地方
      */
     var curDayTextColor: Int
-        private set
     val curDayLunarTextColor: Int
     val weekTextColor: Int
     var schemeTextColor: Int
-        private set
     var schemeLunarTextColor: Int
-        private set
     var otherMonthTextColor: Int
-        private set
     var currentMonthTextColor: Int
-        private set
     var selectedTextColor: Int
-        private set
     var selectedLunarTextColor: Int
-        private set
     var currentMonthLunarTextColor: Int
-        private set
     var otherMonthLunarTextColor: Int
-        private set
+
     var isPreventLongPressedSelected = false
 
     /**
@@ -348,12 +340,12 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     /**
      * 保存选中的日期
      */
-    var selectedCalendar: Calendar = Calendar()
+    var selectedCalendar = Calendar()
 
     /**
      * 保存标记位置
      */
-    var indexCalendar: Calendar = Calendar()
+    var indexCalendar = Calendar()
 
     /**
      * 多选日历
@@ -667,16 +659,8 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
             minSelectRange = minRange
             return
         }
-        minSelectRange = if (minRange <= 0) {
-            -1
-        } else {
-            minRange
-        }
-        maxSelectRange = if (maxRange <= 0) {
-            -1
-        } else {
-            maxRange
-        }
+        minSelectRange = if (minRange <= 0) -1 else minRange
+        maxSelectRange = if (maxRange <= 0) -1 else maxRange
     }
 
     fun updateCurrentDay() {
@@ -704,10 +688,7 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     }
 
     fun updateCalendarScheme(targetCalendar: Calendar?) {
-        if (targetCalendar == null) {
-            return
-        }
-        if (schemeDatesMap.isEmpty()) {
+        if (targetCalendar == null || schemeDatesMap.isEmpty()) {
             return
         }
         val key = targetCalendar.toString()
@@ -718,22 +699,24 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     }
 
     fun createCurrentDate(): Calendar {
-        val calendar = Calendar()
-        calendar.year = currentDay.year
-        calendar.week = currentDay.week
-        calendar.month = currentDay.month
-        calendar.day = currentDay.day
-        calendar.isCurrentDay = true
+        val calendar = Calendar().apply {
+            year = currentDay.year
+            week = currentDay.week
+            month = currentDay.month
+            day = currentDay.day
+            isCurrentDay = true
+        }
         LunarCalendar.setupLunarCalendar(calendar)
         return calendar
     }
 
     val minRangeCalendar: Calendar
         get() {
-            val calendar = Calendar()
-            calendar.year = minYear
-            calendar.month = minYearMonth
-            calendar.day = minYearDay
+            val calendar = Calendar().apply {
+                year = minYear
+                month = minYearMonth
+                day = minYearDay
+            }
             calendar.isCurrentDay = calendar == currentDay
             LunarCalendar.setupLunarCalendar(calendar)
             return calendar
@@ -741,10 +724,11 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
 
     val maxRangeCalendar: Calendar
         get() {
-            val calendar = Calendar()
-            calendar.year = maxYear
-            calendar.month = maxYearMonth
-            calendar.day = maxYearDay
+            val calendar = Calendar().apply {
+                year = maxYear
+                month = maxYearMonth
+                day = maxYearDay
+            }
             calendar.isCurrentDay = calendar == currentDay
             LunarCalendar.setupLunarCalendar(calendar)
             return calendar
@@ -834,12 +818,14 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
             var start = startTimeMills
             while (start <= endTimeMills) {
                 date.timeInMillis = start
-                val calendar = Calendar()
-                calendar.year = date[java.util.Calendar.YEAR]
-                calendar.month = date[java.util.Calendar.MONTH] + 1
-                calendar.day = date[java.util.Calendar.DAY_OF_MONTH]
+                val calendar = Calendar().apply {
+                    year = date[java.util.Calendar.YEAR]
+                    month = date[java.util.Calendar.MONTH] + 1
+                    day = date[java.util.Calendar.DAY_OF_MONTH]
+                }
                 LunarCalendar.setupLunarCalendar(calendar)
                 updateCalendarScheme(calendar)
+
                 if (calendarInterceptListener?.onCalendarIntercept(calendar) == true) {
                     start += oneDay
                     continue

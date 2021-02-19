@@ -101,8 +101,8 @@ abstract class RangeMonthView(context: Context) : BaseMonthView(context) {
         }
         return if (viewDelegate.selectedEndRangeCalendar == null) {
             calendar.compareTo(viewDelegate.selectedStartRangeCalendar) == 0
-        } else calendar >= viewDelegate.selectedStartRangeCalendar &&
-                calendar <= viewDelegate.selectedEndRangeCalendar
+        } else calendar >= viewDelegate.selectedStartRangeCalendar
+                && calendar <= viewDelegate.selectedEndRangeCalendar
     }
 
     override fun onClick(v: View) {
@@ -167,15 +167,11 @@ abstract class RangeMonthView(context: Context) : BaseMonthView(context) {
             parentLayout?.updateSelectPosition(items.indexOf(calendar))
         } else {
             parentLayout?.updateSelectWeek(
-                CalendarUtil.getWeekFromDayInMonth(
-                    calendar,
-                    viewDelegate.weekStart
-                )
+                CalendarUtil.getWeekFromDayInMonth(calendar, viewDelegate.weekStart)
             )
         }
         viewDelegate.calendarRangeSelectListener?.onCalendarRangeSelect(
-            calendar,
-            viewDelegate.selectedEndRangeCalendar != null
+            calendar, viewDelegate.selectedEndRangeCalendar != null
         )
     }
 
@@ -198,8 +194,7 @@ abstract class RangeMonthView(context: Context) : BaseMonthView(context) {
         } else {
             preCalendar = items[calendarIndex - 1]
         }
-        return viewDelegate.selectedStartRangeCalendar != null &&
-                isCalendarSelected(preCalendar)
+        return viewDelegate.selectedStartRangeCalendar != null && isCalendarSelected(preCalendar)
     }
 
     /**
@@ -217,8 +212,7 @@ abstract class RangeMonthView(context: Context) : BaseMonthView(context) {
         } else {
             nextCalendar = items[calendarIndex + 1]
         }
-        return viewDelegate.selectedStartRangeCalendar != null &&
-                isCalendarSelected(nextCalendar)
+        return viewDelegate.selectedStartRangeCalendar != null && isCalendarSelected(nextCalendar)
     }
 
     /**

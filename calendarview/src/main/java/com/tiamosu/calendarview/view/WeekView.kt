@@ -30,6 +30,7 @@ abstract class WeekView(context: Context) : BaseWeekView(context) {
         for (i in items.indices) {
             val x = i * itemWidth + viewDelegate.calendarPaddingLeft
             onLoopStart(x)
+
             val calendar = items[i]
             val isSelected = i == currentItem
             val hasScheme = calendar.hasScheme()

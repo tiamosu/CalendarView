@@ -119,8 +119,7 @@ abstract class MultiMonthView(context: Context) : BaseMonthView(context) {
         } else {
             if (viewDelegate.selectedCalendars.size >= viewDelegate.maxMultiSelectSize) {
                 viewDelegate.calendarMultiSelectListener?.onMultiSelectOutOfSize(
-                    calendar,
-                    viewDelegate.maxMultiSelectSize
+                    calendar, viewDelegate.maxMultiSelectSize
                 )
                 return
             }
@@ -137,22 +136,15 @@ abstract class MultiMonthView(context: Context) : BaseMonthView(context) {
             parentLayout?.updateSelectPosition(items.indexOf(calendar))
         } else {
             parentLayout?.updateSelectWeek(
-                CalendarUtil.getWeekFromDayInMonth(
-                    calendar,
-                    viewDelegate.weekStart
-                )
+                CalendarUtil.getWeekFromDayInMonth(calendar, viewDelegate.weekStart)
             )
         }
         viewDelegate.calendarMultiSelectListener?.onCalendarMultiSelect(
-            calendar,
-            viewDelegate.selectedCalendars.size,
-            viewDelegate.maxMultiSelectSize
+            calendar, viewDelegate.selectedCalendars.size, viewDelegate.maxMultiSelectSize
         )
     }
 
-    override fun onLongClick(v: View): Boolean {
-        return false
-    }
+    override fun onLongClick(v: View) = false
 
     /**
      * 上一个日期是否选中
@@ -203,8 +195,13 @@ abstract class MultiMonthView(context: Context) : BaseMonthView(context) {
      * @return 是否继续绘制onDrawScheme，true or false
      */
     protected abstract fun onDrawSelected(
-        canvas: Canvas, calendar: Calendar, x: Int, y: Int,
-        hasScheme: Boolean, isSelectedPre: Boolean, isSelectedNext: Boolean
+        canvas: Canvas,
+        calendar: Calendar,
+        x: Int,
+        y: Int,
+        hasScheme: Boolean,
+        isSelectedPre: Boolean,
+        isSelectedNext: Boolean
     ): Boolean
 
     /**

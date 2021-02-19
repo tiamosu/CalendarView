@@ -129,8 +129,7 @@ abstract class RangeWeekView(context: Context) : BaseWeekView(context) {
             parentLayout?.updateSelectWeek(i)
         }
         viewDelegate.calendarRangeSelectListener?.onCalendarRangeSelect(
-            calendar,
-            viewDelegate.selectedEndRangeCalendar != null
+            calendar, viewDelegate.selectedEndRangeCalendar != null
         )
         invalidate()
     }
@@ -154,8 +153,7 @@ abstract class RangeWeekView(context: Context) : BaseWeekView(context) {
         } else {
             preCalendar = items[calendarIndex - 1]
         }
-        return viewDelegate.selectedStartRangeCalendar != null &&
-                isCalendarSelected(preCalendar)
+        return viewDelegate.selectedStartRangeCalendar != null && isCalendarSelected(preCalendar)
     }
 
     /**
@@ -173,8 +171,7 @@ abstract class RangeWeekView(context: Context) : BaseWeekView(context) {
         } else {
             nextCalendar = items[calendarIndex + 1]
         }
-        return viewDelegate.selectedStartRangeCalendar != null &&
-                isCalendarSelected(nextCalendar)
+        return viewDelegate.selectedStartRangeCalendar != null && isCalendarSelected(nextCalendar)
     }
 
     /**
@@ -189,8 +186,12 @@ abstract class RangeWeekView(context: Context) : BaseWeekView(context) {
      * @return 是否绘制 onDrawScheme
      */
     protected abstract fun onDrawSelected(
-        canvas: Canvas, calendar: Calendar, x: Int, hasScheme: Boolean,
-        isSelectedPre: Boolean, isSelectedNext: Boolean
+        canvas: Canvas,
+        calendar: Calendar,
+        x: Int,
+        hasScheme: Boolean,
+        isSelectedPre: Boolean,
+        isSelectedNext: Boolean
     ): Boolean
 
     /**

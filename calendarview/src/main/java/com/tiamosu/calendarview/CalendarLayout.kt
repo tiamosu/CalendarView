@@ -559,7 +559,7 @@ class CalendarLayout(context: Context, attrs: AttributeSet?) : LinearLayoutCompa
         requestLayout()
     }
 
-    override fun onSaveInstanceState(): Parcelable? {
+    override fun onSaveInstanceState(): Parcelable {
         return Bundle().apply {
             val parcelable = super.onSaveInstanceState()
             putParcelable("super", parcelable)

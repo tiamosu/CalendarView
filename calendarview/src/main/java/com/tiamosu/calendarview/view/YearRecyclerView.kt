@@ -20,7 +20,6 @@ import java.util.*
 class YearRecyclerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : RecyclerView(context, attrs) {
-
     private lateinit var viewDelegate: CalendarViewDelegate
     private val viewAdapter = YearViewAdapter(context)
     private var monthSelectedListener: OnMonthSelectedListener? = null

@@ -1,5 +1,6 @@
 package com.tiamosu.calendarview.entity
 
+import androidx.annotation.Keep
 import com.tiamosu.calendarview.utils.CalendarUtil
 import java.io.Serializable
 import java.util.*
@@ -10,6 +11,7 @@ import java.util.*
  * @author tiamosu
  * @date 2020/5/25.
  */
+@Keep
 class Calendar : Serializable, Comparable<Calendar?> {
 
     /**

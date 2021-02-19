@@ -14,10 +14,8 @@ import java.util.*
 abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var items: MutableList<T> = ArrayList()
     private var onItemClickListener: OnItemClickListener? = null
-    private var onClickListener: OnClickListener
-
-    init {
-        onClickListener = object : OnClickListener() {
+    private val onClickListener by lazy {
+        object : OnClickListener() {
             override fun onClick(position: Int, itemId: Long) {
                 onItemClickListener?.onItemClick(position, itemId)
             }
@@ -59,9 +57,7 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHo
         }
     }
 
-    fun getItems(): List<T> {
-        return items
-    }
+    fun getItems() = items
 
     fun getItem(position: Int): T? {
         return if (position < 0 || position >= items.size) {
@@ -69,7 +65,7 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHo
         } else items[position]
     }
 
-    internal abstract class OnClickListener : View.OnClickListener {
+    private abstract class OnClickListener : View.OnClickListener {
         override fun onClick(v: View) {
             val holder = v.tag as? RecyclerView.ViewHolder ?: return
             onClick(holder.adapterPosition, holder.itemId)

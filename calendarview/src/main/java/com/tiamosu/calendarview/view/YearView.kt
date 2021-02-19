@@ -26,72 +26,160 @@ abstract class YearView @JvmOverloads constructor(
     /**
      * 当前月份日期的笔
      */
-    protected var curMonthTextPaint = Paint()
+    protected val curMonthTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+            color = -0xeeeeef
+            isFakeBoldText = true
+        }
+    }
 
     /**
      * 其它月份日期颜色
      */
-    protected var otherMonthTextPaint = Paint()
+    protected val otherMonthTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+            color = -0x1e1e1f
+            isFakeBoldText = true
+        }
+    }
 
     /**
      * 当前月份农历文本颜色
      */
-    protected var curMonthLunarTextPaint = Paint()
+    protected val curMonthLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 当前月份农历文本颜色
      */
-    protected var selectedLunarTextPaint = Paint()
+    protected val selectedLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 其它月份农历文本颜色
      */
-    protected var otherMonthLunarTextPaint = Paint()
+    protected val otherMonthLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 其它月份农历文本颜色
      */
-    protected var schemeLunarTextPaint = Paint()
+    protected val schemeLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 标记的日期背景颜色画笔
      */
-    protected var schemePaint = Paint()
+    protected val schemePaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            strokeWidth = 2f
+            color = -0x101011
+        }
+    }
 
     /**
      * 被选择的日期背景色
      */
-    protected var selectedPaint = Paint()
+    protected val selectedPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            strokeWidth = 2f
+        }
+    }
 
     /**
      * 标记的文本画笔
      */
-    protected var schemeTextPaint = Paint()
+    protected val schemeTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = -0x12acad
+            isFakeBoldText = true
+        }
+    }
 
     /**
      * 选中的文本画笔
      */
-    protected var selectTextPaint = Paint()
+    protected val selectTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = -0x12acad
+            isFakeBoldText = true
+        }
+    }
 
     /**
      * 当前日期文本颜色画笔
      */
-    protected var curDayTextPaint = Paint()
+    protected val curDayTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+            color = Color.RED
+            isFakeBoldText = true
+        }
+    }
 
     /**
      * 当前日期文本颜色画笔
      */
-    protected var curDayLunarTextPaint = Paint()
+    protected val curDayLunarTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
+            color = Color.RED
+            isFakeBoldText = true
+        }
+    }
 
     /**
      * 月份画笔
      */
-    protected var monthTextPaint = Paint()
+    protected val monthTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            isFakeBoldText = true
+        }
+    }
 
     /**
      * 周栏画笔
      */
-    protected var weekTextPaint = Paint()
+    protected val weekTextPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            isFakeBoldText = true
+            textAlign = Paint.Align.CENTER
+        }
+    }
 
     /**
      * 日历项
@@ -147,75 +235,6 @@ abstract class YearView @JvmOverloads constructor(
      * 日历的行数
      */
     protected var lineCount = 0
-
-    init {
-        initPaint()
-    }
-
-    /**
-     * 初始化配置
-     */
-    private fun initPaint() {
-        curMonthTextPaint.isAntiAlias = true
-        curMonthTextPaint.textAlign = Paint.Align.CENTER
-        curMonthTextPaint.color = -0xeeeeef
-        curMonthTextPaint.isFakeBoldText = true
-
-        otherMonthTextPaint.isAntiAlias = true
-        otherMonthTextPaint.textAlign = Paint.Align.CENTER
-        otherMonthTextPaint.color = -0x1e1e1f
-        otherMonthTextPaint.isFakeBoldText = true
-
-        curMonthLunarTextPaint.isAntiAlias = true
-        curMonthLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        selectedLunarTextPaint.isAntiAlias = true
-        selectedLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        otherMonthLunarTextPaint.isAntiAlias = true
-        otherMonthLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        monthTextPaint.isAntiAlias = true
-        monthTextPaint.isFakeBoldText = true
-
-        weekTextPaint.isAntiAlias = true
-        weekTextPaint.isFakeBoldText = true
-        weekTextPaint.textAlign = Paint.Align.CENTER
-
-        schemeLunarTextPaint.isAntiAlias = true
-        schemeLunarTextPaint.textAlign = Paint.Align.CENTER
-
-        schemeTextPaint.isAntiAlias = true
-        schemeTextPaint.style = Paint.Style.FILL
-        schemeTextPaint.textAlign = Paint.Align.CENTER
-        schemeTextPaint.color = -0x12acad
-        schemeTextPaint.isFakeBoldText = true
-
-        selectTextPaint.isAntiAlias = true
-        selectTextPaint.style = Paint.Style.FILL
-        selectTextPaint.textAlign = Paint.Align.CENTER
-        selectTextPaint.color = -0x12acad
-        selectTextPaint.isFakeBoldText = true
-
-        schemePaint.isAntiAlias = true
-        schemePaint.style = Paint.Style.FILL
-        schemePaint.strokeWidth = 2f
-        schemePaint.color = -0x101011
-
-        curDayTextPaint.isAntiAlias = true
-        curDayTextPaint.textAlign = Paint.Align.CENTER
-        curDayTextPaint.color = Color.RED
-        curDayTextPaint.isFakeBoldText = true
-
-        curDayLunarTextPaint.isAntiAlias = true
-        curDayLunarTextPaint.textAlign = Paint.Align.CENTER
-        curDayLunarTextPaint.color = Color.RED
-        curDayLunarTextPaint.isFakeBoldText = true
-
-        selectedPaint.isAntiAlias = true
-        selectedPaint.style = Paint.Style.FILL
-        selectedPaint.strokeWidth = 2f
-    }
 
     /**
      * 设置

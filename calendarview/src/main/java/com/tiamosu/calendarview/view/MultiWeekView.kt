@@ -86,8 +86,7 @@ abstract class MultiWeekView(context: Context) : BaseWeekView(context) {
         } else {
             if (viewDelegate.selectedCalendars.size >= viewDelegate.maxMultiSelectSize) {
                 viewDelegate.calendarMultiSelectListener?.onMultiSelectOutOfSize(
-                    calendar,
-                    viewDelegate.maxMultiSelectSize
+                    calendar, viewDelegate.maxMultiSelectSize
                 )
                 return
             }
@@ -100,16 +99,12 @@ abstract class MultiWeekView(context: Context) : BaseWeekView(context) {
             parentLayout?.updateSelectWeek(i)
         }
         viewDelegate.calendarMultiSelectListener?.onCalendarMultiSelect(
-            calendar,
-            viewDelegate.selectedCalendars.size,
-            viewDelegate.maxMultiSelectSize
+            calendar, viewDelegate.selectedCalendars.size, viewDelegate.maxMultiSelectSize
         )
         invalidate()
     }
 
-    override fun onLongClick(v: View): Boolean {
-        return false
-    }
+    override fun onLongClick(v: View) = false
 
     /**
      * 上一个日期是否选中
@@ -159,8 +154,12 @@ abstract class MultiWeekView(context: Context) : BaseWeekView(context) {
      * @return 是否绘制 onDrawScheme
      */
     protected abstract fun onDrawSelected(
-        canvas: Canvas, calendar: Calendar, x: Int, hasScheme: Boolean,
-        isSelectedPre: Boolean, isSelectedNext: Boolean
+        canvas: Canvas,
+        calendar: Calendar,
+        x: Int,
+        hasScheme: Boolean,
+        isSelectedPre: Boolean,
+        isSelectedNext: Boolean
     ): Boolean
 
     /**

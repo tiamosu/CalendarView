@@ -13,30 +13,29 @@ import com.tiamosu.calendarview.utils.CalendarUtil
  * @date 2020/5/25.
  */
 class DefaultMonthView(context: Context) : MonthView(context) {
-    private val textPaint = Paint()
-    private val schemeBasicPaint = Paint()
-    private val radio: Float
-    private val padding: Int
-    private val schemeBaseLine: Float
-
-    init {
-        textPaint.textSize = CalendarUtil.dipToPx(context, 8f).toFloat()
-        textPaint.color = -0x1
-        textPaint.isAntiAlias = true
-        textPaint.isFakeBoldText = true
-        schemeBasicPaint.isAntiAlias = true
-        schemeBasicPaint.style = Paint.Style.FILL
-        schemeBasicPaint.textAlign = Paint.Align.CENTER
-        schemeBasicPaint.color = -0x12acad
-        schemeBasicPaint.isFakeBoldText = true
-        radio = CalendarUtil.dipToPx(getContext(), 7f).toFloat()
-        padding = CalendarUtil.dipToPx(getContext(), 4f)
+    private val textPaint by lazy {
+        Paint().apply {
+            textSize = CalendarUtil.dipToPx(context, 8f).toFloat()
+            color = -0x1
+            isAntiAlias = true
+            isFakeBoldText = true
+        }
+    }
+    private val schemeBasicPaint by lazy {
+        Paint().apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = -0x12acad
+            isFakeBoldText = true
+        }
+    }
+    private val radio by lazy { CalendarUtil.dipToPx(getContext(), 7f).toFloat() }
+    private val padding by lazy { CalendarUtil.dipToPx(getContext(), 4f) }
+    private val schemeBaseLine by lazy {
         val metrics = schemeBasicPaint.fontMetrics
-        schemeBaseLine =
-            radio - metrics.descent + (metrics.bottom - metrics.top) / 2 + CalendarUtil.dipToPx(
-                getContext(),
-                1f
-            )
+        radio - metrics.descent + (metrics.bottom - metrics.top) / 2 +
+                CalendarUtil.dipToPx(getContext(), 1f)
     }
 
     /**
@@ -56,8 +55,10 @@ class DefaultMonthView(context: Context) : MonthView(context) {
     ): Boolean {
         selectedItemPaint.style = Paint.Style.FILL
         canvas.drawRect(
-            x + padding.toFloat(), y + padding.toFloat(),
-            x + itemWidth - padding.toFloat(), y + itemHeight - padding.toFloat(), selectedItemPaint
+            x + padding.toFloat(),
+            y + padding.toFloat(),
+            x + itemWidth - padding.toFloat(),
+            y + itemHeight - padding.toFloat(), selectedItemPaint
         )
         return true
     }

@@ -25,10 +25,9 @@ import com.tiamosu.calendarview.utils.LunarCalendar
 class WeekViewPager @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
-
+    private lateinit var viewDelegate: CalendarViewDelegate
     private var isUpdateWeekView = false
     private var weekCount = 0
-    private lateinit var viewDelegate: CalendarViewDelegate
 
     /**
      * 日历布局，需要在日历下方放自己的布局
@@ -56,6 +55,7 @@ class WeekViewPager @JvmOverloads constructor(
             viewDelegate.weekStart
         )
         adapter = WeekViewPagerAdapter()
+
         addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
@@ -163,10 +163,11 @@ class WeekViewPager @JvmOverloads constructor(
         invokeListener: Boolean
     ) {
         isUsingScrollToCalendar = true
-        val calendar = Calendar()
-        calendar.year = year
-        calendar.month = month
-        calendar.day = day
+        val calendar = Calendar().apply {
+            this.year = year
+            this.month = month
+            this.day = day
+        }
         calendar.isCurrentDay = calendar == viewDelegate.currentDay
         LunarCalendar.setupLunarCalendar(calendar)
 
@@ -208,14 +209,12 @@ class WeekViewPager @JvmOverloads constructor(
         }
         if (visibility == View.VISIBLE) {
             viewDelegate.calendarSelectListener?.onCalendarSelect(
-                viewDelegate.selectedCalendar,
-                false
+                viewDelegate.selectedCalendar, false
             )
         }
         if (visibility == View.VISIBLE) {
             viewDelegate.innerDateSelectedListener?.onWeekDateSelected(
-                viewDelegate.currentDay,
-                false
+                viewDelegate.currentDay, false
             )
         }
         val i = CalendarUtil.getWeekFromDayInMonth(viewDelegate.currentDay, viewDelegate.weekStart)
@@ -272,9 +271,9 @@ class WeekViewPager @JvmOverloads constructor(
      */
     fun updateSelected() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.setSelectedCalendar(viewDelegate.selectedCalendar)
-            view.invalidate()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.setSelectedCalendar(viewDelegate.selectedCalendar)
+            view?.invalidate()
         }
     }
 
@@ -283,9 +282,9 @@ class WeekViewPager @JvmOverloads constructor(
      */
     fun updateStyle() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.updateStyle()
-            view.invalidate()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.updateStyle()
+            view?.invalidate()
         }
     }
 
@@ -294,8 +293,8 @@ class WeekViewPager @JvmOverloads constructor(
      */
     fun updateScheme() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.update()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.update()
         }
     }
 
@@ -304,8 +303,8 @@ class WeekViewPager @JvmOverloads constructor(
      */
     fun updateCurrentDate() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.updateCurrentDate()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.updateCurrentDate()
         }
     }
 
@@ -314,8 +313,8 @@ class WeekViewPager @JvmOverloads constructor(
      */
     fun updateShowMode() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.updateShowMode()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.updateShowMode()
         }
     }
 
@@ -344,8 +343,8 @@ class WeekViewPager @JvmOverloads constructor(
             adapter?.notifyDataSetChanged()
         }
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.updateWeekStart()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.updateWeekStart()
         }
         isUpdateWeekView = false
         updateSelected(viewDelegate.selectedCalendar, false)
@@ -356,9 +355,9 @@ class WeekViewPager @JvmOverloads constructor(
      */
     fun updateItemHeight() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.updateItemHeight()
-            view.requestLayout()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.updateItemHeight()
+            view?.requestLayout()
         }
     }
 
@@ -367,24 +366,24 @@ class WeekViewPager @JvmOverloads constructor(
      */
     fun clearSelectRange() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.invalidate()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.invalidate()
         }
     }
 
     fun clearSingleSelect() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.currentItem = -1
-            view.invalidate()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.currentItem = -1
+            view?.invalidate()
         }
     }
 
     fun clearMultiSelect() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseWeekView
-            view.currentItem = -1
-            view.invalidate()
+            val view = getChildAt(i) as? BaseWeekView
+            view?.currentItem = -1
+            view?.invalidate()
         }
     }
 
@@ -414,9 +413,7 @@ class WeekViewPager @JvmOverloads constructor(
      * 周视图切换
      */
     private inner class WeekViewPagerAdapter : PagerAdapter() {
-        override fun getCount(): Int {
-            return weekCount
-        }
+        override fun getCount() = weekCount
 
         override fun getItemPosition(`object`: Any): Int {
             return if (isUpdateWeekView) POSITION_NONE else super.getItemPosition(`object`)

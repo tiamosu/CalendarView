@@ -44,19 +44,13 @@ object CalendarUtil {
         if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) {
             count = 31
         }
-
         //判断小月
         if (month == 4 || month == 6 || month == 9 || month == 11) {
             count = 30
         }
-
         //判断平年与闰年
         if (month == 2) {
-            count = if (isLeapYear(year)) {
-                29
-            } else {
-                28
-            }
+            count = if (isLeapYear(year)) 29 else 28
         }
         return count
     }
@@ -143,11 +137,11 @@ object CalendarUtil {
         date[calendar.year, calendar.month - 1, calendar.day, 12, 0] = 0
         val timeMills = date.timeInMillis //获得起始时间戳
         date.timeInMillis = timeMills - ONE_DAY
-        val preCalendar = Calendar()
-        preCalendar.year = date[java.util.Calendar.YEAR]
-        preCalendar.month = date[java.util.Calendar.MONTH] + 1
-        preCalendar.day = date[java.util.Calendar.DAY_OF_MONTH]
-        return preCalendar
+        return Calendar().apply {
+            year = date[java.util.Calendar.YEAR]
+            month = date[java.util.Calendar.MONTH] + 1
+            day = date[java.util.Calendar.DAY_OF_MONTH]
+        }
     }
 
     fun getNextCalendar(calendar: Calendar): Calendar {
@@ -155,11 +149,11 @@ object CalendarUtil {
         date[calendar.year, calendar.month - 1, calendar.day, 12, 0] = 0
         val timeMills = date.timeInMillis //获得起始时间戳
         date.timeInMillis = timeMills + ONE_DAY
-        val nextCalendar = Calendar()
-        nextCalendar.year = date[java.util.Calendar.YEAR]
-        nextCalendar.month = date[java.util.Calendar.MONTH] + 1
-        nextCalendar.day = date[java.util.Calendar.DAY_OF_MONTH]
-        return nextCalendar
+        return Calendar().apply {
+            year = date[java.util.Calendar.YEAR]
+            month = date[java.util.Calendar.MONTH] + 1
+            day = date[java.util.Calendar.DAY_OF_MONTH]
+        }
     }
 
     /**
@@ -281,8 +275,12 @@ object CalendarUtil {
      */
     fun isCalendarInRange(
         calendar: Calendar,
-        minYear: Int, minYearMonth: Int, minYearDay: Int,
-        maxYear: Int, maxYearMonth: Int, maxYearDay: Int
+        minYear: Int,
+        minYearMonth: Int,
+        minYearDay: Int,
+        maxYear: Int,
+        maxYearMonth: Int,
+        maxYearDay: Int
     ): Boolean {
         val c = java.util.Calendar.getInstance()
         c[minYear, minYearMonth - 1] = minYearDay
@@ -309,8 +307,12 @@ object CalendarUtil {
      * @return 周数用于WeekViewPager itemCount
      */
     fun getWeekCountBetweenBothCalendar(
-        minYear: Int, minYearMonth: Int, minYearDay: Int,
-        maxYear: Int, maxYearMonth: Int, maxYearDay: Int,
+        minYear: Int,
+        minYearMonth: Int,
+        minYearDay: Int,
+        maxYear: Int,
+        maxYearMonth: Int,
+        maxYearDay: Int,
         weekStart: Int
     ): Int {
         val date = java.util.Calendar.getInstance()
@@ -339,7 +341,9 @@ object CalendarUtil {
      */
     fun getWeekFromCalendarStartWithMinCalendar(
         calendar: Calendar,
-        minYear: Int, minYearMonth: Int, minYearDay: Int,
+        minYear: Int,
+        minYearMonth: Int,
+        minYearDay: Int,
         weekStart: Int
     ): Int {
         val date = java.util.Calendar.getInstance()
@@ -392,11 +396,11 @@ object CalendarUtil {
         )
         timeCountMills -= startDiff * ONE_DAY
         date.timeInMillis = timeCountMills
-        val calendar = Calendar()
-        calendar.year = date[java.util.Calendar.YEAR]
-        calendar.month = date[java.util.Calendar.MONTH] + 1
-        calendar.day = date[java.util.Calendar.DAY_OF_MONTH]
-        return calendar
+        return Calendar().apply {
+            year = date[java.util.Calendar.YEAR]
+            month = date[java.util.Calendar.MONTH] + 1
+            day = date[java.util.Calendar.DAY_OF_MONTH]
+        }
     }
 
     /**
@@ -407,8 +411,12 @@ object CalendarUtil {
     fun isCalendarInRange(calendar: Calendar, delegate: CalendarViewDelegate): Boolean {
         return isCalendarInRange(
             calendar,
-            delegate.minYear, delegate.minYearMonth, delegate.minYearDay,
-            delegate.maxYear, delegate.maxYearMonth, delegate.maxYearDay
+            delegate.minYear,
+            delegate.minYearMonth,
+            delegate.minYearDay,
+            delegate.maxYear,
+            delegate.maxYearMonth,
+            delegate.maxYearDay
         )
     }
 
@@ -457,17 +465,23 @@ object CalendarUtil {
      * @return -1 0 1
      */
     fun compareTo(
-        minYear: Int, minYearMonth: Int, minYearDay: Int,
-        maxYear: Int, maxYearMonth: Int, maxYearDay: Int
+        minYear: Int,
+        minYearMonth: Int,
+        minYearDay: Int,
+        maxYear: Int,
+        maxYearMonth: Int,
+        maxYearDay: Int
     ): Int {
-        val first = Calendar()
-        first.year = minYear
-        first.month = minYearMonth
-        first.day = minYearDay
-        val second = Calendar()
-        second.year = maxYear
-        second.month = maxYearMonth
-        second.day = maxYearDay
+        val first = Calendar().apply {
+            year = minYear
+            month = minYearMonth
+            day = minYearDay
+        }
+        val second = Calendar().apply {
+            year = maxYear
+            month = maxYearMonth
+            day = maxYearDay
+        }
         return first.compareTo(second)
     }
 
@@ -565,10 +579,11 @@ object CalendarUtil {
         curTime -= startDiff * ONE_DAY
         val minCalendar = java.util.Calendar.getInstance()
         minCalendar.timeInMillis = curTime
-        val startCalendar = Calendar()
-        startCalendar.year = minCalendar[java.util.Calendar.YEAR]
-        startCalendar.month = minCalendar[java.util.Calendar.MONTH] + 1
-        startCalendar.day = minCalendar[java.util.Calendar.DAY_OF_MONTH]
+        val startCalendar = Calendar().apply {
+            year = minCalendar[java.util.Calendar.YEAR]
+            month = minCalendar[java.util.Calendar.MONTH] + 1
+            day = minCalendar[java.util.Calendar.DAY_OF_MONTH]
+        }
         return initCalendarForWeekView(startCalendar, mDelegate)
     }
 
@@ -591,22 +606,25 @@ object CalendarUtil {
         val weekEndDiff = 6
         val mItems: MutableList<Calendar> = ArrayList()
         date.timeInMillis = curDateMills
-        val selectCalendar = Calendar()
-        selectCalendar.year = calendar.year
-        selectCalendar.month = calendar.month
-        selectCalendar.day = calendar.day
+        val selectCalendar = Calendar().apply {
+            year = calendar.year
+            month = calendar.month
+            day = calendar.day
+        }
         if (selectCalendar == mDelegate.currentDay) {
             selectCalendar.isCurrentDay = true
         }
         LunarCalendar.setupLunarCalendar(selectCalendar)
         selectCalendar.isCurrentMonth = true
         mItems.add(selectCalendar)
+
         for (i in 1..weekEndDiff) {
             date.timeInMillis = curDateMills + i * ONE_DAY
-            val calendarDate = Calendar()
-            calendarDate.year = date[java.util.Calendar.YEAR]
-            calendarDate.month = date[java.util.Calendar.MONTH] + 1
-            calendarDate.day = date[java.util.Calendar.DAY_OF_MONTH]
+            val calendarDate = Calendar().apply {
+                year = date[java.util.Calendar.YEAR]
+                month = date[java.util.Calendar.MONTH] + 1
+                day = date[java.util.Calendar.DAY_OF_MONTH]
+            }
             if (calendarDate == mDelegate.currentDay) {
                 calendarDate.isCurrentDay = true
             }

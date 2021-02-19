@@ -24,10 +24,9 @@ import kotlin.math.abs
 class MonthViewPager @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
-
+    private lateinit var viewDelegate: CalendarViewDelegate
     private var isUpdateMonthView = false
     private var monthCount = 0
-    private lateinit var viewDelegate: CalendarViewDelegate
     private var nextViewHeight = 0
     private var preViewHeight = 0
     private var currentViewHeight = 0
@@ -51,9 +50,9 @@ class MonthViewPager @JvmOverloads constructor(
             viewDelegate.currentDay.year,
             viewDelegate.currentDay.month
         )
-        val params = layoutParams
-        params.height = currentViewHeight
-        layoutParams = params
+        layoutParams = layoutParams.apply {
+            height = currentViewHeight
+        }
         init()
     }
 
@@ -64,6 +63,7 @@ class MonthViewPager @JvmOverloads constructor(
         monthCount = (12 * (viewDelegate.maxYear - viewDelegate.minYear)
                 - viewDelegate.minYearMonth) + 1 + viewDelegate.maxYearMonth
         adapter = MonthViewPagerAdapter()
+
         addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
@@ -74,19 +74,13 @@ class MonthViewPager @JvmOverloads constructor(
                     return
                 }
                 val height = if (position < currentItem) { //右滑-1
-                    (preViewHeight
-                            * (1 - positionOffset) +
-                            currentViewHeight
-                            * positionOffset).toInt()
+                    (preViewHeight * (1 - positionOffset) + currentViewHeight * positionOffset).toInt()
                 } else { //左滑+！
-                    (currentViewHeight
-                            * (1 - positionOffset) +
-                            nextViewHeight
-                            * positionOffset).toInt()
+                    (currentViewHeight * (1 - positionOffset) + nextViewHeight * positionOffset).toInt()
                 }
-                val params = layoutParams
-                params.height = height
-                layoutParams = params
+                layoutParams = layoutParams.apply {
+                    this.height = height
+                }
             }
 
             override fun onPageSelected(position: Int) {
@@ -163,54 +157,48 @@ class MonthViewPager @JvmOverloads constructor(
     private fun updateMonthViewHeight(year: Int, month: Int) {
         if (viewDelegate.monthViewShowMode == CalendarViewDelegate.MODE_ALL_MONTH) { //非动态高度就不需要了
             currentViewHeight = 6 * viewDelegate.calendarItemHeight
-            val params = layoutParams
-            params.height = currentViewHeight
+            layoutParams.apply {
+                height = currentViewHeight
+            }
             return
         }
         if (visibility != View.VISIBLE) { //如果已经显示周视图，则需要动态改变月视图高度，否则显示就有bug
-            val params = layoutParams
-            params.height = CalendarUtil.getMonthViewHeight(
-                year, month,
-                viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                viewDelegate.monthViewShowMode
-            )
-            layoutParams = params
+            layoutParams = layoutParams.apply {
+                height = CalendarUtil.getMonthViewHeight(
+                    year, month, viewDelegate.calendarItemHeight,
+                    viewDelegate.weekStart, viewDelegate.monthViewShowMode
+                )
+            }
         }
         parentLayout?.updateContentViewTranslateY()
 
         currentViewHeight = CalendarUtil.getMonthViewHeight(
-            year, month,
-            viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-            viewDelegate.monthViewShowMode
+            year, month, viewDelegate.calendarItemHeight,
+            viewDelegate.weekStart, viewDelegate.monthViewShowMode
         )
         if (month == 1) {
             preViewHeight = CalendarUtil.getMonthViewHeight(
-                year - 1, 12,
-                viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                viewDelegate.monthViewShowMode
+                year - 1, 12, viewDelegate.calendarItemHeight,
+                viewDelegate.weekStart, viewDelegate.monthViewShowMode
             )
             nextViewHeight = CalendarUtil.getMonthViewHeight(
-                year, 2,
-                viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                viewDelegate.monthViewShowMode
+                year, 2, viewDelegate.calendarItemHeight,
+                viewDelegate.weekStart, viewDelegate.monthViewShowMode
             )
         } else {
             preViewHeight = CalendarUtil.getMonthViewHeight(
-                year, month - 1,
-                viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                viewDelegate.monthViewShowMode
+                year, month - 1, viewDelegate.calendarItemHeight,
+                viewDelegate.weekStart, viewDelegate.monthViewShowMode
             )
             nextViewHeight = if (month == 12) {
                 CalendarUtil.getMonthViewHeight(
-                    year + 1, 1,
-                    viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                    viewDelegate.monthViewShowMode
+                    year + 1, 1, viewDelegate.calendarItemHeight,
+                    viewDelegate.weekStart, viewDelegate.monthViewShowMode
                 )
             } else {
                 CalendarUtil.getMonthViewHeight(
-                    year, month + 1,
-                    viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                    viewDelegate.monthViewShowMode
+                    year, month + 1, viewDelegate.calendarItemHeight,
+                    viewDelegate.weekStart, viewDelegate.monthViewShowMode
                 )
             }
         }
@@ -221,8 +209,7 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun notifyDataSetChanged() {
         monthCount = (12 * (viewDelegate.maxYear - viewDelegate.minYear)
-                - viewDelegate.minYearMonth) + 1 +
-                viewDelegate.maxYearMonth
+                - viewDelegate.minYearMonth) + 1 + viewDelegate.maxYearMonth
         notifyAdapterDataSetChanged()
     }
 
@@ -279,10 +266,11 @@ class MonthViewPager @JvmOverloads constructor(
         invokeListener: Boolean
     ) {
         isUsingScrollToCalendar = true
-        val calendar = Calendar()
-        calendar.year = year
-        calendar.month = month
-        calendar.day = day
+        val calendar = Calendar().apply {
+            this.year = year
+            this.month = month
+            this.day = day
+        }
         calendar.isCurrentDay = calendar == viewDelegate.currentDay
         LunarCalendar.setupLunarCalendar(calendar)
 
@@ -334,8 +322,7 @@ class MonthViewPager @JvmOverloads constructor(
         }
         if (visibility == View.VISIBLE) {
             viewDelegate.calendarSelectListener?.onCalendarSelect(
-                viewDelegate.selectedCalendar,
-                false
+                viewDelegate.selectedCalendar, false
             )
         }
     }
@@ -347,8 +334,8 @@ class MonthViewPager @JvmOverloads constructor(
      */
     val currentMonthCalendars: List<Calendar>?
         get() {
-            val view: BaseMonthView? = findViewWithTag(currentItem) ?: return null
-            return view?.items
+            val view: BaseMonthView = findViewWithTag(currentItem) ?: return null
+            return view.items
         }
 
     /**
@@ -371,9 +358,9 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun updateSelected() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.setSelectedCalendar(viewDelegate.selectedCalendar)
-            view.invalidate()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.setSelectedCalendar(viewDelegate.selectedCalendar)
+            view?.invalidate()
         }
     }
 
@@ -382,9 +369,9 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun updateStyle() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.updateStyle()
-            view.invalidate()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.updateStyle()
+            view?.invalidate()
         }
     }
 
@@ -393,8 +380,8 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun updateScheme() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.update()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.update()
         }
     }
 
@@ -403,8 +390,8 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun updateCurrentDate() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.updateCurrentDate()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.updateCurrentDate()
         }
     }
 
@@ -413,9 +400,9 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun updateShowMode() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.updateShowMode()
-            view.requestLayout()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.updateShowMode()
+            view?.requestLayout()
         }
         if (viewDelegate.monthViewShowMode == CalendarViewDelegate.MODE_ALL_MONTH) {
             currentViewHeight = 6 * viewDelegate.calendarItemHeight
@@ -427,9 +414,9 @@ class MonthViewPager @JvmOverloads constructor(
                 viewDelegate.selectedCalendar.month
             )
         }
-        val params = layoutParams
-        params.height = currentViewHeight
-        layoutParams = params
+        layoutParams = layoutParams.apply {
+            height = currentViewHeight
+        }
         parentLayout?.updateContentViewTranslateY()
     }
 
@@ -438,17 +425,17 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun updateWeekStart() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.updateWeekStart()
-            view.requestLayout()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.updateWeekStart()
+            view?.requestLayout()
         }
         updateMonthViewHeight(
             viewDelegate.selectedCalendar.year,
             viewDelegate.selectedCalendar.month
         )
-        val params = layoutParams
-        params.height = currentViewHeight
-        layoutParams = params
+        layoutParams = layoutParams.apply {
+            height = currentViewHeight
+        }
         val i = CalendarUtil.getWeekFromDayInMonth(
             viewDelegate.selectedCalendar,
             viewDelegate.weekStart
@@ -469,44 +456,38 @@ class MonthViewPager @JvmOverloads constructor(
         val year = viewDelegate.indexCalendar.year
         val month = viewDelegate.indexCalendar.month
         currentViewHeight = CalendarUtil.getMonthViewHeight(
-            year, month,
-            viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-            viewDelegate.monthViewShowMode
+            year, month, viewDelegate.calendarItemHeight,
+            viewDelegate.weekStart, viewDelegate.monthViewShowMode
         )
         if (month == 1) {
             preViewHeight = CalendarUtil.getMonthViewHeight(
-                year - 1, 12,
-                viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                viewDelegate.monthViewShowMode
+                year - 1, 12, viewDelegate.calendarItemHeight,
+                viewDelegate.weekStart, viewDelegate.monthViewShowMode
             )
             nextViewHeight = CalendarUtil.getMonthViewHeight(
-                year, 2,
-                viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                viewDelegate.monthViewShowMode
+                year, 2, viewDelegate.calendarItemHeight,
+                viewDelegate.weekStart, viewDelegate.monthViewShowMode
             )
         } else {
             preViewHeight = CalendarUtil.getMonthViewHeight(
-                year, month - 1,
-                viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                viewDelegate.monthViewShowMode
+                year, month - 1, viewDelegate.calendarItemHeight,
+                viewDelegate.weekStart, viewDelegate.monthViewShowMode
             )
             nextViewHeight = if (month == 12) {
                 CalendarUtil.getMonthViewHeight(
-                    year + 1, 1,
-                    viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                    viewDelegate.monthViewShowMode
+                    year + 1, 1, viewDelegate.calendarItemHeight,
+                    viewDelegate.weekStart, viewDelegate.monthViewShowMode
                 )
             } else {
                 CalendarUtil.getMonthViewHeight(
-                    year, month + 1,
-                    viewDelegate.calendarItemHeight, viewDelegate.weekStart,
-                    viewDelegate.monthViewShowMode
+                    year, month + 1, viewDelegate.calendarItemHeight,
+                    viewDelegate.weekStart, viewDelegate.monthViewShowMode
                 )
             }
         }
-        val params = layoutParams
-        params.height = currentViewHeight
-        layoutParams = params
+        layoutParams = layoutParams.apply {
+            height = currentViewHeight
+        }
     }
 
     /**
@@ -514,8 +495,8 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun clearSelectRange() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.invalidate()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.invalidate()
         }
     }
 
@@ -524,9 +505,9 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun clearSingleSelect() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.currentItem = -1
-            view.invalidate()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.currentItem = -1
+            view?.invalidate()
         }
     }
 
@@ -535,9 +516,9 @@ class MonthViewPager @JvmOverloads constructor(
      */
     fun clearMultiSelect() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as BaseMonthView
-            view.currentItem = -1
-            view.invalidate()
+            val view = getChildAt(i) as? BaseMonthView
+            view?.currentItem = -1
+            view?.invalidate()
         }
     }
 
@@ -570,9 +551,7 @@ class MonthViewPager @JvmOverloads constructor(
      * 日历卡月份Adapter
      */
     private inner class MonthViewPagerAdapter : PagerAdapter() {
-        override fun getCount(): Int {
-            return monthCount
-        }
+        override fun getCount() = monthCount
 
         override fun getItemPosition(`object`: Any): Int {
             return if (isUpdateMonthView) POSITION_NONE else super.getItemPosition(`object`)

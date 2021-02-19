@@ -24,15 +24,15 @@ import kotlin.math.abs
 class YearViewPager @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : ViewPager(context, attrs) {
-
+    private lateinit var viewDelegate: CalendarViewDelegate
     private var yearCount = 0
     private var isUpdateYearView = false
-    private lateinit var viewDelegate: CalendarViewDelegate
     private var monthSelectedListener: YearRecyclerView.OnMonthSelectedListener? = null
 
     fun setup(delegate: CalendarViewDelegate) {
         viewDelegate = delegate
         yearCount = viewDelegate.maxYear - viewDelegate.minYear + 1
+
         adapter = object : PagerAdapter() {
             override fun getCount(): Int {
                 return yearCount
@@ -103,8 +103,8 @@ class YearViewPager @JvmOverloads constructor(
      */
     fun update() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as YearRecyclerView
-            view.notifyAdapterDataSetChanged()
+            val view = getChildAt(i) as? YearRecyclerView
+            view?.notifyAdapterDataSetChanged()
         }
     }
 
@@ -113,9 +113,9 @@ class YearViewPager @JvmOverloads constructor(
      */
     fun updateWeekStart() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as YearRecyclerView
-            view.updateWeekStart()
-            view.notifyAdapterDataSetChanged()
+            val view = getChildAt(i) as? YearRecyclerView
+            view?.updateWeekStart()
+            view?.notifyAdapterDataSetChanged()
         }
     }
 
@@ -124,8 +124,8 @@ class YearViewPager @JvmOverloads constructor(
      */
     fun updateStyle() {
         for (i in 0 until childCount) {
-            val view = getChildAt(i) as YearRecyclerView
-            view.updateStyle()
+            val view = getChildAt(i) as? YearRecyclerView
+            view?.updateStyle()
         }
     }
 

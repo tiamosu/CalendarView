@@ -70,8 +70,8 @@ abstract class BaseMonthView(context: Context) : BaseView(context) {
         } else {
             items.indexOf(viewDelegate.selectedCalendar)
         }
-        if (currentItem > 0 && viewDelegate.calendarInterceptListener
-                ?.onCalendarIntercept(viewDelegate.selectedCalendar) == true
+        if (currentItem > 0
+            && viewDelegate.calendarInterceptListener?.onCalendarIntercept(viewDelegate.selectedCalendar) == true
         ) {
             currentItem = -1
         }
