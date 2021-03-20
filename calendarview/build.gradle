@@ -1,15 +1,18 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-parcelize'
+apply {
+    plugin "com.android.library"
+    plugin "kotlin-android"
+    plugin "kotlin-parcelize"
+    plugin "kotlin-kapt"
+}
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion Android.compileSdkVersion
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion Android.minSdkVersion
+        targetSdkVersion Android.targetSdkVersion
+        versionCode Android.versionCode
+        versionName Android.versionName
+
         consumerProguardFiles "consumer-rules.pro"
     }
     buildTypes {
@@ -19,15 +22,21 @@ android {
         }
     }
     lintOptions {
+        checkReleaseBuilds false
         abortOnError false
-        warning 'InvalidPackage'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    compileOnly Deps.androidx_appcompat
+    compileOnly Deps.androidx_recyclerview
 }
 
-apply from: 'bintray.gradle'
+apply from: "${rootDir.path}/config_publish.gradle"
