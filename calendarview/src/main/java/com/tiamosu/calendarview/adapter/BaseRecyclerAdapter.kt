@@ -68,7 +68,7 @@ abstract class BaseRecyclerAdapter<T> : RecyclerView.Adapter<RecyclerView.ViewHo
     private abstract class OnClickListener : View.OnClickListener {
         override fun onClick(v: View) {
             val holder = v.tag as? RecyclerView.ViewHolder ?: return
-            onClick(holder.adapterPosition, holder.itemId)
+            onClick(holder.layoutPosition, holder.itemId)
         }
 
         abstract fun onClick(position: Int, itemId: Long)
