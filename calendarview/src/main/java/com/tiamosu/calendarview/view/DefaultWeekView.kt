@@ -54,11 +54,14 @@ class DefaultWeekView(context: Context) : WeekView(context) {
         hasScheme: Boolean
     ): Boolean {
         selectedItemPaint.style = Paint.Style.FILL
-        canvas.drawRect(
+        canvas.drawRoundRect(
             x + padding.toFloat(),
             padding.toFloat(),
             x + itemWidth - padding.toFloat(),
-            itemHeight - padding.toFloat(), selectedItemPaint
+            itemHeight - padding.toFloat(),
+            viewDelegate.selectThemeRadius,
+            viewDelegate.selectThemeRadius,
+            selectedItemPaint,
         )
         return true
     }

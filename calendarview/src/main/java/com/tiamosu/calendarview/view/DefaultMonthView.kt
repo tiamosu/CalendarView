@@ -54,11 +54,14 @@ class DefaultMonthView(context: Context) : MonthView(context) {
         hasScheme: Boolean
     ): Boolean {
         selectedItemPaint.style = Paint.Style.FILL
-        canvas.drawRect(
+        canvas.drawRoundRect(
             x + padding.toFloat(),
             y + padding.toFloat(),
             x + itemWidth - padding.toFloat(),
-            y + itemHeight - padding.toFloat(), selectedItemPaint
+            y + itemHeight - padding.toFloat(),
+            viewDelegate.selectThemeRadius,
+            viewDelegate.selectThemeRadius,
+            selectedItemPaint,
         )
         return true
     }

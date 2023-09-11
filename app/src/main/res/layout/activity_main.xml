@@ -26,6 +26,7 @@
             app:selected_lunar_text_color="@android:color/white"
             app:selected_text_color="@android:color/white"
             app:selected_theme_color="@android:color/holo_red_light"
+            app:selected_theme_radius="15dp"
             app:week_background="@color/colorAccent"
             app:week_line_background="@color/colorPrimary"
             app:week_text_color="@android:color/white" />
