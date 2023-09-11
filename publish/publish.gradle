@@ -181,7 +181,7 @@ private def loadLocalProperties() {
 }
 
 private def loadPublishProperties() {
-    return loadProperties("publish.properties")
+    return loadProperties("publish/publish.properties")
 }
 
 private def loadProperties(String fileName) {
@@ -200,6 +200,6 @@ private def loadProperties(String fileName) {
 
 private def readProperty(String key) {
     def value = project.hasProperty(key) ? project[key] : ''
-    println("loadProperties --- key:${key}   value:${value}")
+    println("readProperty --- key:${key}   value:${value}")
     return value
 }

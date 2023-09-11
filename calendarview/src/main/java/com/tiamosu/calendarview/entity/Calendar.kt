@@ -139,7 +139,7 @@ class Calendar : Serializable, Comparable<Calendar?> {
     }
 
     fun hasScheme(): Boolean {
-        if (schemes?.size != 0) {
+        if ((schemes?.size ?: 0) != 0) {
             return true
         }
         return scheme.isNotBlank()

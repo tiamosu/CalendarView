@@ -25,9 +25,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     compileOnly Deps.appcompat
-    implementation(Deps.recyclerview) {
-        transitive(true)
-    }
+    implementation Deps.recyclerview
 }
 
-apply from: "${rootDir.path}/publish.gradle"
+apply from: "${rootDir.path}/publish/publish.gradle"

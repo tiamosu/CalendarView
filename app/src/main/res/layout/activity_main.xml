@@ -10,11 +10,25 @@
     <com.tiamosu.calendarview.CalendarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:calendar_content_view_id="@id/main_nsv">
+        app:calendar_content_view_id="@id/main_nsv"
+        app:calendar_show_mode="both_month_week_view"
+        app:default_status="expand">
 
         <com.tiamosu.calendarview.CalendarView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            app:current_day_lunar_text_color="@color/colorPrimaryDark"
+            app:current_day_text_color="@color/colorPrimaryDark"
+            app:current_month_lunar_text_color="@android:color/white"
+            app:current_month_text_color="@android:color/white"
+            app:other_month_lunar_text_color="#80ffffff"
+            app:other_month_text_color="#80ffffff"
+            app:selected_lunar_text_color="@android:color/white"
+            app:selected_text_color="@android:color/white"
+            app:selected_theme_color="@android:color/holo_red_light"
+            app:week_background="@color/colorAccent"
+            app:week_line_background="@color/colorPrimary"
+            app:week_text_color="@android:color/white" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/main_nsv"
