@@ -101,11 +101,10 @@ object LunarUtil {
         val lunarInt = IntArray(4)
         var index = year - solarList[0]
         val data = year shl 9 or (month shl 5) or day
-        val solar11: Int
         if (solarList[index] > data) {
             index--
         }
-        solar11 = solarList[index]
+        val solar11 = solarList[index]
         val y = getBitInt(solar11, 12, 9)
         val m = getBitInt(solar11, 4, 5)
         val d = getBitInt(solar11, 5, 0)
@@ -114,7 +113,6 @@ object LunarUtil {
         val leap = getBitInt(days, 4, 13)
         val lunarY = index + solarList[0]
         var lunarM = 1
-        val lunarD: Int
         offset += 1
         for (i in 0..12) {
             val dm = if (getBitInt(days, 1, 12 - i) == 1) 30 else 29
@@ -125,7 +123,7 @@ object LunarUtil {
                 break
             }
         }
-        lunarD = offset.toInt()
+        val lunarD = offset.toInt()
         lunarInt[0] = lunarY
         lunarInt[1] = lunarM
         lunarInt[3] = 0

@@ -511,15 +511,19 @@ object LunarCalendar {
         val year = calendar.year
         val month = calendar.month
         val day = calendar.day
+
         calendar.isWeekend = CalendarUtil.isWeekend(calendar)
         calendar.week = CalendarUtil.getWeekFormCalendar(calendar)
+        calendar.isLeapYear = CalendarUtil.isLeapYear(year)
+
         val lunarCalendar = Calendar()
         calendar.lunarCalendar = lunarCalendar
+
         val lunar = LunarUtil.solarToLunar(year, month, day)
         lunarCalendar.year = lunar[0]
         lunarCalendar.month = lunar[1]
         lunarCalendar.day = lunar[2]
-        calendar.isLeapYear = CalendarUtil.isLeapYear(year)
+
         if (lunar[3] == 1) { //如果是闰月
             calendar.leapMonth = lunar[1]
             lunarCalendar.leapMonth = lunar[1]
@@ -545,11 +549,11 @@ object LunarCalendar {
         lunarCalendar.solarTerm = solarTerm
         lunarCalendar.gregorianFestival = gregorian
 
-        //优先级：传统 → 气节 → 特殊 → 公历
+        //优先级：传统 → 特殊 → 24节气 → 公历
         when {
             festival.isNotBlank() -> calendar.lunar = festival
-            solarTerm.isNotBlank() -> calendar.lunar = solarTerm
             gregorian.isNotBlank() -> calendar.lunar = gregorian
+            solarTerm.isNotBlank() -> calendar.lunar = solarTerm
             else -> calendar.lunar = lunarText
         }
         lunarCalendar.lunar = lunarText

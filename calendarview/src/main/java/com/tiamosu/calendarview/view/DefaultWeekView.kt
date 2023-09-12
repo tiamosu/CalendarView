@@ -97,20 +97,23 @@ class DefaultWeekView(context: Context) : WeekView(context) {
         hasScheme: Boolean,
         isSelected: Boolean
     ) {
+        val isLunarTextVisible = viewDelegate.isLunarTextVisible
         val cx = x + itemWidth / 2
-        val top = -itemHeight / 6
+        val top = if (isLunarTextVisible) -itemHeight / 6 else 0
         when {
             isSelected -> {
                 canvas.drawText(
                     java.lang.String.valueOf(calendar.day), cx.toFloat(), textBaseLine + top,
                     selectTextPaint
                 )
-                canvas.drawText(
-                    calendar.lunar,
-                    cx.toFloat(),
-                    textBaseLine + itemHeight / 10,
-                    selectedLunarTextPaint
-                )
+                if (isLunarTextVisible) {
+                    canvas.drawText(
+                        calendar.lunar,
+                        cx.toFloat(),
+                        textBaseLine + itemHeight / 10,
+                        selectedLunarTextPaint
+                    )
+                }
             }
             hasScheme -> {
                 canvas.drawText(
@@ -121,10 +124,14 @@ class DefaultWeekView(context: Context) : WeekView(context) {
                         else -> otherMonthTextPaint
                     }
                 )
-                canvas.drawText(
-                    calendar.lunar, cx.toFloat(), textBaseLine + itemHeight / 10,
-                    if (calendar.isCurrentDay) curDayLunarTextPaint else schemeLunarTextPaint
-                )
+                if (isLunarTextVisible) {
+                    canvas.drawText(
+                        calendar.lunar,
+                        cx.toFloat(),
+                        textBaseLine + itemHeight / 10,
+                        if (calendar.isCurrentDay) curDayLunarTextPaint else schemeLunarTextPaint
+                    )
+                }
             }
             else -> {
                 canvas.drawText(
@@ -135,14 +142,18 @@ class DefaultWeekView(context: Context) : WeekView(context) {
                         else -> otherMonthTextPaint
                     }
                 )
-                canvas.drawText(
-                    calendar.lunar, cx.toFloat(), textBaseLine + itemHeight / 10,
-                    when {
-                        calendar.isCurrentDay -> curDayLunarTextPaint
-                        calendar.isCurrentMonth -> curMonthLunarTextPaint
-                        else -> otherMonthLunarTextPaint
-                    }
-                )
+                if (isLunarTextVisible) {
+                    canvas.drawText(
+                        calendar.lunar,
+                        cx.toFloat(),
+                        textBaseLine + itemHeight / 10,
+                        when {
+                            calendar.isCurrentDay -> curDayLunarTextPaint
+                            calendar.isCurrentMonth -> curMonthLunarTextPaint
+                            else -> otherMonthLunarTextPaint
+                        }
+                    )
+                }
             }
         }
     }

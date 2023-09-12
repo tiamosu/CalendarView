@@ -163,13 +163,13 @@
     </string-array>
 
     <string-array name="week_string_array">
-        <item>日</item>
-        <item>一</item>
-        <item>二</item>
-        <item>三</item>
-        <item>四</item>
-        <item>五</item>
-        <item>六</item>
+        <item>@string/sun</item>
+        <item>@string/mon</item>
+        <item>@string/tue</item>
+        <item>@string/wed</item>
+        <item>@string/thu</item>
+        <item>@string/fri</item>
+        <item>@string/sat</item>
     </string-array>
 
     <string-array name="year_view_week_string_array">
@@ -182,7 +182,7 @@
         <item>六</item>
     </string-array>
 
-    <string-array name="month_string_array">
+    <string-array name="year_view_month_string_array">
         <item>1月</item>
         <item>2月</item>
         <item>3月</item>

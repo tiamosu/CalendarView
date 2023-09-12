@@ -166,6 +166,11 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     var selectThemeRadius: Float
 
     /**
+     * 是否展示农历
+     */
+    var isLunarTextVisible: Boolean
+
+    /**
      * 自定义的日历路径
      */
     private val monthViewClassPath: String?
@@ -435,7 +440,9 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
             array.getColor(R.styleable.CalendarView_current_day_lunar_text_color, Color.RED)
         selectedThemeColor =
             array.getColor(R.styleable.CalendarView_selected_theme_color, 0x50CFCFCF)
+
         selectThemeRadius = array.getDimension(R.styleable.CalendarView_selected_theme_radius, 0f)
+        isLunarTextVisible = array.getBoolean(R.styleable.CalendarView_lunar_text_visible, true)
 
         selectedTextColor = array.getColor(R.styleable.CalendarView_selected_text_color, -0xeeeeef)
         selectedLunarTextColor =

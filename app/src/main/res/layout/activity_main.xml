@@ -17,19 +17,26 @@
         <com.tiamosu.calendarview.CalendarView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:calendar_height="58dp"
+            app:calendar_match_parent="false"
             app:current_day_lunar_text_color="@color/colorPrimaryDark"
             app:current_day_text_color="@color/colorPrimaryDark"
             app:current_month_lunar_text_color="@android:color/white"
             app:current_month_text_color="@android:color/white"
+            app:day_text_size="15sp"
+            app:lunar_text_size="9sp"
+            app:lunar_text_visible="true"
+            app:month_view_show_mode="mode_all"
             app:other_month_lunar_text_color="#80ffffff"
             app:other_month_text_color="#80ffffff"
             app:selected_lunar_text_color="@android:color/white"
             app:selected_text_color="@android:color/white"
             app:selected_theme_color="@android:color/holo_red_light"
-            app:selected_theme_radius="15dp"
+            app:selected_theme_radius="50dp"
             app:week_background="@color/colorAccent"
             app:week_line_background="@color/colorPrimary"
-            app:week_text_color="@android:color/white" />
+            app:week_text_color="@android:color/white"
+            app:week_text_size="18sp" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/main_nsv"

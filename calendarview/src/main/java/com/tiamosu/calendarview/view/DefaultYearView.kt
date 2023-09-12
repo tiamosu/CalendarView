@@ -25,9 +25,7 @@ class DefaultYearView(context: Context) : YearView(context) {
         width: Int,
         height: Int
     ) {
-        val text = context
-            .resources
-            .getStringArray(R.array.month_string_array)[month - 1]
+        val text = context.resources.getStringArray(R.array.year_view_month_string_array)[month - 1]
         canvas.drawText(
             text,
             x + itemWidth / 2 - textPadding.toFloat(),
