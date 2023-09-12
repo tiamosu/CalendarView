@@ -24,6 +24,8 @@
         <attr name="calendar_match_parent" format="boolean" /> <!-- 全屏日历 -->
 
         <attr name="selected_theme_radius" format="dimension" />
+        <attr name="selected_theme_width" format="dimension" />
+        <attr name="selected_theme_height" format="dimension" />
         <attr name="lunar_text_visible" format="boolean" />
 
         <attr name="scheme_text_color" format="color" />

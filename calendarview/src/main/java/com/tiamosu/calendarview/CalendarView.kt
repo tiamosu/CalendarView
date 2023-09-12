@@ -1123,8 +1123,11 @@ open class CalendarView @JvmOverloads constructor(
         otherMonthLunarTextColor: Int
     ) {
         viewDelegate.setTextColor(
-            currentDayTextColor, curMonthTextColor,
-            otherMonthColor, curMonthLunarTextColor, otherMonthLunarTextColor
+            currentDayTextColor,
+            curMonthTextColor,
+            otherMonthColor,
+            curMonthLunarTextColor,
+            otherMonthLunarTextColor
         )
         monthViewPager.updateStyle()
         weekViewPager.updateStyle()

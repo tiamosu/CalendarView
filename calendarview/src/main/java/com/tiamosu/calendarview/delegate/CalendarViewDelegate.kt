@@ -12,7 +12,7 @@ import com.tiamosu.calendarview.view.DefaultMonthView
 import com.tiamosu.calendarview.view.DefaultWeekView
 import com.tiamosu.calendarview.view.DefaultYearView
 import com.tiamosu.calendarview.view.WeekBar
-import java.util.*
+import java.util.Date
 
 /**
  * 属性委托
@@ -161,9 +161,19 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
         private set
 
     /**
-     * 选中的主题视图圆角大小
+     * 被选中的主题视图圆角大小
      */
-    var selectThemeRadius: Float
+    var selectedThemeRadius: Float
+
+    /**
+     * 被选中的主题视图宽度
+     */
+    var selectedThemeWidth: Float
+
+    /**
+     * 被选中的主题视图高度
+     */
+    var selectedThemeHeight: Float
 
     /**
      * 是否展示农历
@@ -441,7 +451,10 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
         selectedThemeColor =
             array.getColor(R.styleable.CalendarView_selected_theme_color, 0x50CFCFCF)
 
-        selectThemeRadius = array.getDimension(R.styleable.CalendarView_selected_theme_radius, 0f)
+        selectedThemeRadius = array.getDimension(R.styleable.CalendarView_selected_theme_radius, 0f)
+        selectedThemeWidth = array.getDimension(R.styleable.CalendarView_selected_theme_width, -1f)
+        selectedThemeHeight =
+            array.getDimension(R.styleable.CalendarView_selected_theme_height, -1f)
         isLunarTextVisible = array.getBoolean(R.styleable.CalendarView_lunar_text_visible, true)
 
         selectedTextColor = array.getColor(R.styleable.CalendarView_selected_text_color, -0xeeeeef)
@@ -630,18 +643,21 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     }
 
     fun setTextColor(
-        curDayTextColor: Int, curMonthTextColor: Int, otherMonthTextColor: Int,
-        curMonthLunarTextColor: Int, otherMonthLunarTextColor: Int
+        curDayTextColor: Int,
+        curMonthTextColor: Int,
+        otherMonthTextColor: Int,
+        curMonthLunarTextColor: Int,
+        otherMonthLunarTextColor: Int
     ) {
         this.curDayTextColor = curDayTextColor
         this.otherMonthTextColor = otherMonthTextColor
-        currentMonthTextColor = curMonthTextColor
-        currentMonthLunarTextColor = curMonthLunarTextColor
+        this.currentMonthTextColor = curMonthTextColor
+        this.currentMonthLunarTextColor = curMonthLunarTextColor
         this.otherMonthLunarTextColor = otherMonthLunarTextColor
     }
 
     fun setSchemeColor(schemeColor: Int, schemeTextColor: Int, schemeLunarTextColor: Int) {
-        schemeThemeColor = schemeColor
+        this.schemeThemeColor = schemeColor
         this.schemeTextColor = schemeTextColor
         this.schemeLunarTextColor = schemeLunarTextColor
     }
@@ -653,18 +669,18 @@ class CalendarViewDelegate constructor(context: Context, attrs: AttributeSet?) {
     ) {
         this.yearViewMonthTextColor = yearViewMonthTextColor
         this.yearViewDayTextColor = yearViewDayTextColor
-        yearViewSchemeTextColor = yarViewSchemeTextColor
+        this.yearViewSchemeTextColor = yarViewSchemeTextColor
     }
 
     fun setSelectColor(selectedColor: Int, selectedTextColor: Int, selectedLunarTextColor: Int) {
-        selectedThemeColor = selectedColor
+        this.selectedThemeColor = selectedColor
         this.selectedTextColor = selectedTextColor
         this.selectedLunarTextColor = selectedLunarTextColor
     }
 
     fun setThemeColor(selectedThemeColor: Int, schemeColor: Int) {
         this.selectedThemeColor = selectedThemeColor
-        schemeThemeColor = schemeColor
+        this.schemeThemeColor = schemeColor
     }
 
     fun setSelectRange(minRange: Int, maxRange: Int) {

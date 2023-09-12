@@ -15,6 +15,7 @@
         app:default_status="expand">
 
         <com.tiamosu.calendarview.CalendarView
+            android:id="@+id/main_calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:calendar_height="58dp"
@@ -32,7 +33,9 @@
             app:selected_lunar_text_color="@android:color/white"
             app:selected_text_color="@android:color/white"
             app:selected_theme_color="@android:color/holo_red_light"
+            app:selected_theme_height="55dp"
             app:selected_theme_radius="50dp"
+            app:selected_theme_width="55dp"
             app:week_background="@color/colorAccent"
             app:week_line_background="@color/colorPrimary"
             app:week_text_color="@android:color/white"

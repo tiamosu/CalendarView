@@ -54,13 +54,21 @@ class DefaultMonthView(context: Context) : MonthView(context) {
         hasScheme: Boolean
     ): Boolean {
         selectedItemPaint.style = Paint.Style.FILL
+        var themeWidth = viewDelegate.selectedThemeWidth
+        if (themeWidth == -1f || themeWidth > itemWidth) {
+            themeWidth = itemWidth.toFloat()
+        }
+        var themeHeight = viewDelegate.selectedThemeHeight
+        if (themeHeight == -1f || themeHeight > itemHeight) {
+            themeHeight = itemHeight.toFloat()
+        }
         canvas.drawRoundRect(
-            x + padding.toFloat(),
-            y + padding.toFloat(),
-            x + itemWidth - padding.toFloat(),
-            y + itemHeight - padding.toFloat(),
-            viewDelegate.selectThemeRadius,
-            viewDelegate.selectThemeRadius,
+            x + padding.toFloat() + itemWidth / 2f - themeWidth / 2f,
+            y + padding.toFloat() + itemHeight / 2f - themeHeight / 2f,
+            x - padding.toFloat() + itemWidth / 2f + themeWidth / 2f,
+            y - padding.toFloat() + itemHeight / 2f + themeHeight / 2f,
+            viewDelegate.selectedThemeRadius,
+            viewDelegate.selectedThemeRadius,
             selectedItemPaint,
         )
         return true
