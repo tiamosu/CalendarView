@@ -18,7 +18,7 @@ allprojects {
 ```
 
 ``` groovy
-implementation 'com.gitee.tiamosu:calendarview:2.0.2'
+implementation 'com.gitee.tiamosu:calendarview:2.0.3'
 ```
 
 ## 感谢原作者的贡献
